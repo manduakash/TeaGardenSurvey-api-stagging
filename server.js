@@ -9,7 +9,7 @@ import logRoutes from "./routes/logs.js";
 import loginRoute from "./routes/login.js";
 import logoutRoute from "./routes/logout.js";
 import  userRoute from "./routes/userRoutes.js";
-// import surveyRoutes from "./routes/surveyRoutes.js";
+import surveyRoutes from "./routes/surveyRoutes.js";
 import commonRoutes from "./routes/commonRoutes.js";
 const app = express();
 // env variables
@@ -40,7 +40,7 @@ app.use("/api/auth", loginRoute);
 app.use("/api/auth", logoutRoute);
 app.use("/api/user", userRoute);
 app.use("/api", commonRoutes);
-// app.use("/api/survey",surveyRoutes);
+app.use("/api",surveyRoutes);
 // test route
 app.use("/test", (req, res) => {
   res.send("api running...");
