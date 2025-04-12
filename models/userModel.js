@@ -30,7 +30,7 @@ export async function createUserModel(
           CreatedBy
         ]
       );
-  
+  console.log("rows", rows)
       // Fetch the output parameter `@p_ErrorCode`
       const [[errorResult]] = await pool.query("SELECT @p_ErrorCode as ErrorCode");
   

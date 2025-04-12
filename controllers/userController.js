@@ -16,6 +16,18 @@ export const createUser = async (req, res) => {
         CreatedBy,
       } = req.body; // Extract input from request body
   
+      console.log({
+        Username ,
+        Password,
+        FullName,
+        UserTypeID ,
+        StateID,
+        DistrictID,
+        SubDivisionID ,
+        BlockID,
+        GPID,
+        CreatedBy,
+      })
       // Check if all required inputs are provided
       if (
         !(
@@ -23,12 +35,8 @@ export const createUser = async (req, res) => {
           Password &&
           FullName &&
           UserTypeID &&
-          StateID &&
-          DistrictID &&
-          SubDivisionID &&
-          BlockID &&
-          GPID &&
-          CreatedBy
+          StateID 
+         
         )
       ) {
         // Debug logging for invalid input
@@ -75,7 +83,7 @@ export const createUser = async (req, res) => {
         GPID,
         CreatedBy
       );
-  
+  console.log("result", result);
       if (result === 0) {
         // If user creation was successful
         logger.debug(
