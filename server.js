@@ -8,6 +8,7 @@ import morgan from "morgan";
 import logRoutes from "./routes/logs.js";
 import loginRoute from "./routes/login.js";
 import logoutRoute from "./routes/logout.js";
+import  createUser from "./routes/userRoutes.js";
 
 const app = express();
 // env variables
@@ -36,6 +37,7 @@ app.use(morgan(morganFormat));
 app.use("/api/", logRoutes);
 app.use("/api/auth", loginRoute);
 app.use("/api/auth", logoutRoute);
+app.use("/api/createUser", createUser)
 // test route
 app.use("/test", (req, res) => {
   res.send("api running...");

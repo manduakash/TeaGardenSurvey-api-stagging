@@ -71,17 +71,17 @@ export const login = async (req, res) => {
 export const logout = async (req, res) => {
   try {
     // get user from req
-    const { user_id } = req.body;
-    console.log("logged out",user_id);
+    const {UserID} = req.body;
+    console.log("logged out",UserID);
     
     // log out model call
-    await userLogoutModel(user_id);
-
+    const response = await userLogoutModel(UserID);
+console.log("response",response);
     // debug logging
     logger.debug(
       JSON.stringify({
         API: "logout",
-        REQUEST: user_id,
+        REQUEST: UserID,
         RESPONSE: {
           success: true,
           message: "Logout successfully",
