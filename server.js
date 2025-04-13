@@ -3,6 +3,7 @@ import dotenv from "dotenv";
 dotenv.config();
 import cors from "cors";
 import morgan from "morgan";
+import path from 'path';
 
 // routes
 import logRoutes from "./routes/logs.js";
@@ -12,11 +13,14 @@ import  userRoute from "./routes/userRoutes.js";
 import surveyRoutes from "./routes/surveyRoutes.js";
 import commonRoutes from "./routes/commonRoutes.js";
 import getDistrictsByState from "./routes/dropdownRoutes.js";
+import fileUploadRoutes from "./routes/fileUploadRoutes.js";
 const app = express();
 // env variables
 const host = process.env.API_HOST || 3003;
 const port = process.env.API_PORT || 3003;
 
+// Serve /uploads as static folder
+app.use('/uploads', express.static(path.join(process.cwd(), 'uploads')));
 // for api input in body (json)
 app.use(express.json({ limit: "25mb" }));
 // for api input in form-date
@@ -43,6 +47,7 @@ app.use("/api/user", userRoute);
 app.use("/api", commonRoutes);
 app.use("/api",surveyRoutes);
 app.use("/api/dropdownList", getDistrictsByState)
+app.use("/api/upload", fileUploadRoutes)
 // test route
 app.use("/test", (req, res) => {
   res.send("api running...");
