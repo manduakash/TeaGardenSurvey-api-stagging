@@ -1,47 +1,106 @@
 import pool from "../db.js";
 
+
+
+// export async function insertHouseholdModel(
+//   state,
+//   district,
+//   sub_division,
+//   block,
+//   gp,
+//   village,
+//   house_number,
+//   latitude,
+//   longitude,
+//   family_income,
+//   total_members,
+//   user_id
+// ) {
+//   try {
+//     const [rows] = await pool.query(
+//       "CALL sp_insertHousehold(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,@p_error_code);",
+//       [
+//         state,
+//         district,
+//         sub_division,
+//         block,
+//         gp,
+//         village,
+//         house_number,
+//         latitude,
+//         longitude,
+//         family_income,
+//         total_members,
+//         user_id,
+//       ]
+//     );
+// console.log([
+//   state,
+//   district,
+//   sub_division,
+//   block,
+//   gp,
+//   village,
+//   house_number,
+//   latitude,
+//   longitude,
+//   family_income,
+//   total_members,
+//   user_id,
+// ])
+//     const [[errorRow]] = await pool.query("SELECT @p_error_code AS ErrorCode");
+//     return errorRow?.ErrorCode ?? 9;
+//   } catch (error) {
+//     console.error("insertHouseholdModel error:", error.message);
+//     return 9; // Default to internal error
+//   }
+// }
+
 export async function insertHouseholdModel(
-    state,
-    district,
-    sub_division,
-    block,
-    gp,
-    village,
-    house_number,
-    latitude,
-    longitude,
-    family_income,
-    total_members
-  ) {
-    try {
-      const [rows] = await pool.query(
-        "CALL sp_insertHousehold(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,@p_ErrorCode);",
-        [
-          state,
-          district,
-          sub_division,
-          block,
-          gp,
-          village,
-          house_number,
-          latitude,
-          longitude,
-          family_income,
-          total_members,
-        ]
-      );
+  state,
+  district,
+  sub_division,
+  block,
+  gp,
+  village,
+  house_number,
+  latitude,
+  longitude,
+  family_income,
+  total_members,
+  user_id
+) {
+  try {
+    const params = [
+      state,
+      district,
+      sub_division,
+      block,
+      gp,
+      village,
+      house_number,
+      latitude,
+      longitude,
+      family_income,
+      total_members,
+      user_id
+    ];
+
+    console.log("Calling sp_insertHousehold with params:", params);
+
+    await pool.query("CALL sp_insertHousehold(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,@p_error_code);", params);
+
+    const [[{ error_code }]] = await pool.query("SELECT @p_error_code AS error_code");
   
-      console.log("rows", rows);
-      const [[errorResult]] = await pool.query("SELECT @p_ErrorCode as ErrorCode");
-  
-      return errorResult.ErrorCode;
-      // If you add an error code return from the SP later, you can fetch and return it here.
-     
-    } catch (e) {
-      console.log(e.message);
-      return 1; // Failure
-    }
+    return error_code; 
+
+    // Fallback to generic error if something's off
+  } catch (error) {
+    console.error("insertHouseholdModel error:", error.message);
+    return 9; // General error fallback
   }
+}
+
   
 
   export async function insertHealthModel(
@@ -100,7 +159,7 @@ export async function insertHouseholdModel(
     try {
       
       const [rows] = await pool.query(
-        "CALL ⁠ sp_insertLivelihood(?, ?, ?, ?, ?, @p_error_code);",
+        "CALL  sp_insertLivelihood(?, ?, ?, ?, ?, @p_error_code);",
         [
           household_id,
           shg_member,

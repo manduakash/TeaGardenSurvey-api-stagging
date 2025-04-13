@@ -3,150 +3,90 @@ import { insertHouseholdModel , insertHealthModel, insertLivelihoodModel, insert
 import logger from "../utils/logger.js";
 
 export const insertHousehold = async (req, res) => {
-    try {
-      const {
-        state,
-        district,
-        sub_division,
-        block,
-        gp,
-        village,
-        house_number,
-        latitude,
-        longitude,
-        family_income,
-        total_members,
-      } = req.body;
-  
-      console.log({
-        state,
-        district,
-        sub_division,
-        block,
-        gp,
-        village,
-        house_number,
-        latitude,
-        longitude,
-        family_income,
-        total_members,
-      });
-  
-      // Validate required fields
-      if (!(state && district && block && gp && village && house_number && latitude && longitude)) {
-        logger.debug(
-          JSON.stringify({
-            API: "insertHousehold",
-            REQUEST: {
-              state,
-              district,
-              sub_division,
-              block,
-              gp,
-              village,
-              house_number,
-              latitude,
-              longitude,
-              family_income,
-              total_members,
-            },
-            RESPONSE: {
-              success: false,
-              message: "Invalid Input Parameters",
-            },
-          })
-        );
-  
-        return res.status(400).json({
-          success: false,
-          message: "Invalid Input Parameter(s)",
-          data: null,
-        });
-      }
-  
-      // Call model
-      const result = await insertHouseholdModel(
-        state,
-        district,
-        sub_division,
-        block,
-        gp,
-        village,
-        house_number,
-        latitude,
-        longitude,
-        family_income,
-        total_members
-      );
-  
-      console.log("result", result);
-  
-      if (result === 0) {
-        logger.debug(
-          JSON.stringify({
-            API: "insertHousehold",
-            REQUEST: {
-              state,
-              district,
-              sub_division,
-              block,
-              gp,
-              village,
-              house_number,
-              latitude,
-              longitude,
-              family_income,
-              total_members,
-            },
-            RESPONSE: {
-              success: true,
-              message: "Household inserted successfully",
-            },
-          })
-        );
-  
-        return res.status(200).json({
-          success: true,
-          message: "Household inserted successfully",
-        });
-      } else {
-        logger.debug(
-          JSON.stringify({
-            API: "insertHousehold",
-            REQUEST: {
-              state,
-              district,
-              sub_division,
-              block,
-              gp,
-              village,
-              house_number,
-              latitude,
-              longitude,
-              family_income,
-              total_members,
-            },
-            RESPONSE: {
-              success: false,
-              message: "Failed to insert household",
-            },
-          })
-        );
-  
-        return res.status(400).json({
-          success: false,
-          message: "Failed to insert household",
-        });
-      }
-    } catch (error) {
-      logger.error(error.message);
-      return res.status(500).json({
-        success: false,
-        message: "An error occurred, Please try again",
-        data: null,
-      });
-    }
-  };
+  const {
+    state,
+    district,
+    sub_division,
+    block,
+    gp,
+    village,
+    house_number,
+    latitude,
+    longitude,
+    family_income,
+    total_members,
+    user_id,
+  } = req.body;
+console.log({ state,
+  district,
+  sub_division,
+  block,
+  gp,
+  village,
+  house_number,
+  latitude,
+  longitude,
+  family_income,
+  total_members,
+  user_id,})
+  // Basic validation
+  if (
+    !user_id == undefined 
+  ) {
+    return res.status(400).json({
+      success: false,
+      message: "Missing required input fields",
+    });
+  }
+
+  try {
+    const errorCode = await insertHouseholdModel(
+      state,
+      district,
+      sub_division,
+      block,
+      gp,
+      village,
+      house_number,
+      latitude,
+      longitude,
+      family_income,
+      total_members,
+      user_id
+    );
+
+    let response = {
+      0: { status: 200, message: "Household inserted successfully" },
+      1: { status: 400, message: "Invalid user ID." },
+      2: { status: 400, message: "Invalid state ID." },
+      3: { status: 400, message: "Invalid district ID." },
+      4: { status: 400, message: "Invalid sub-division ID." },
+      5: { status: 400, message: "Invalid block ID." },
+      6: { status: 400, message: "Invalid GP ID." },
+      7: { status: 400, message: "Invalid village ID." },
+      8: { status: 400, message: "Duplicate survey ID." },
+      9: { status: 500, message: "Internal server error." },
+    };
+
+    const resData = response[errorCode] || {
+      status: 500,
+      message: "Unknown error occurred.",
+    };
+
+    return res.status(resData.status).json({
+      success: resData.status === 200,
+      message: resData.message,
+    });
+
+  } catch (error) {
+    console.error("insertHousehold error:", error.message);
+    return res.status(500).json({
+      success: false,
+      message: "Server error occurred.",
+    });
+  }
+};
+
   
 
   export const insertHealth = async (req, res) => {
@@ -323,10 +263,8 @@ export const insertHousehold = async (req, res) => {
   
       // Validate required fields
       if (
-        household_id === undefined ||
-        shg_member === undefined ||
-        wants_to_join_shg === undefined ||
-        training_required === undefined
+        household_id === undefined 
+      
       ) {
         logger.debug(
           JSON.stringify({
@@ -386,6 +324,19 @@ export const insertHousehold = async (req, res) => {
           message: "Livelihood data inserted successfully",
         });
       } else {
+        let err_msg = "Failed to insert livelihood data";
+        if (result === 1) {
+          err_msg = "Household not found."
+        }else
+        if (result === 2) {
+          err_msg = "Livelihood record already exists for this household."
+        }else 
+        if (result === 3) {
+          err_msg = "Invalid Training Option."
+        }else
+        if (result === 9) {
+          err_msg = "Internal server error."
+        }
         logger.debug(
           JSON.stringify({
             API: "insertLivelihood",
@@ -398,14 +349,14 @@ export const insertHousehold = async (req, res) => {
             },
             RESPONSE: {
               success: false,
-              message: "Failed to insert livelihood data",
+              message: err_msg,
             },
           })
         );
   
         return res.status(400).json({
           success: false,
-          message: "Failed to insert livelihood data",
+          message: err_msg,
         });
       }
     } catch (error) {
@@ -441,11 +392,8 @@ export const insertHousehold = async (req, res) => {
   
       // Validate required fields
       if (
-        household_id === undefined ||
-        caste_certificate === undefined ||
-        lakshmir_bhandar === undefined ||
-        swasthya_sathi === undefined ||
-        old_age_pension === undefined
+        household_id === undefined 
+       
       ) {
         logger.debug(
           JSON.stringify({

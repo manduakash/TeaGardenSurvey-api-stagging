@@ -11,6 +11,7 @@ import logoutRoute from "./routes/logout.js";
 import  userRoute from "./routes/userRoutes.js";
 import surveyRoutes from "./routes/surveyRoutes.js";
 import commonRoutes from "./routes/commonRoutes.js";
+import getDistrictsByState from "./routes/dropdownRoutes.js";
 const app = express();
 // env variables
 const host = process.env.API_HOST || 3003;
@@ -41,6 +42,7 @@ app.use("/api/auth", logoutRoute);
 app.use("/api/user", userRoute);
 app.use("/api", commonRoutes);
 app.use("/api",surveyRoutes);
+app.use("/api/dropdownList", getDistrictsByState)
 // test route
 app.use("/test", (req, res) => {
   res.send("api running...");
