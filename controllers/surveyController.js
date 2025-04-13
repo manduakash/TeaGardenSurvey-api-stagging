@@ -611,6 +611,9 @@ export const insertHouseholdV1 = async (req, res) => {
     family_income,
     total_members,
     user_id,
+    family_head_img = null,
+    household_img = null,
+    family_head_signature_img = null
   } = req.body;
 
   console.log({
@@ -626,10 +629,13 @@ export const insertHouseholdV1 = async (req, res) => {
     family_income,
     total_members,
     user_id,
+    family_head_img,
+    household_img,
+    family_head_signature_img
   });
 
   // Basic validation
-  if (user_id === undefined || user_id === null) {
+  if (!user_id) {
     return res.status(400).json({
       success: false,
       message: "Missing required input fields",
@@ -649,7 +655,10 @@ export const insertHouseholdV1 = async (req, res) => {
       longitude,
       family_income,
       total_members,
-      user_id
+      user_id,
+      family_head_img,
+      household_img,
+      family_head_signature_img
     );
 
     const responseMap = {
@@ -677,13 +686,14 @@ export const insertHouseholdV1 = async (req, res) => {
     });
 
   } catch (error) {
-    console.error("insertHousehold error:", error.message);
+    console.error("insertHouseholdV1 error:", error.message);
     return res.status(500).json({
       success: false,
       message: "Server error occurred.",
     });
   }
 };
+
 
 export const offlineSyncSurveyData = async (req, res) => {
   const {
@@ -884,7 +894,10 @@ export const insertHouseHoldAndFamilyMembersData = async (req, res) => {
     family_income,
     total_members,
     user_id,
-    family_members
+    family_members,
+    family_head_img = null,
+    household_img = null,
+    family_head_signature_img = null
   } = req.body;
 
   if (!user_id || !Array.isArray(family_members) || family_members.length === 0) {
@@ -908,7 +921,10 @@ export const insertHouseHoldAndFamilyMembersData = async (req, res) => {
       longitude,
       family_income,
       total_members,
-      user_id
+      user_id,
+      family_head_img,
+      household_img,
+      family_head_signature_img
     );
 
     const responseMap = {
@@ -1055,6 +1071,7 @@ export const insertHouseHoldAndFamilyMembersData = async (req, res) => {
   }
 };
 
+
 export const offlineSyncSurveyAllData = async (req, res) => {
   const { households } = req.body; // Expecting an array of households
 
@@ -1093,7 +1110,6 @@ export const offlineSyncSurveyAllData = async (req, res) => {
         continue;
       }
 
-      // First insert household
       const { error_code, household_id } = await insertHouseholdModelV1(
         state,
         district,
@@ -1130,7 +1146,6 @@ export const offlineSyncSurveyAllData = async (req, res) => {
         continue;
       }
 
-      // Now insert family members
       const resultMessages = [];
 
       for (const member of family_members) {
@@ -1153,7 +1168,10 @@ export const offlineSyncSurveyAllData = async (req, res) => {
           caste_certificate,
           lakshmir_bhandar,
           swasthya_sathi,
-          old_age_pension
+          old_age_pension,
+          has_disability,
+          disability_type,
+          disability_percentage
         } = member;
 
         const memberResult = {
@@ -1179,7 +1197,10 @@ export const offlineSyncSurveyAllData = async (req, res) => {
               nutrition_status,
               bp,
               sugar_level,
-              remarks
+              remarks,
+              has_disability,
+              disability_type,
+              disability_percentage
             );
 
             if (healthResult !== 0) {
@@ -1246,7 +1267,6 @@ export const offlineSyncSurveyAllData = async (req, res) => {
       }
     }
 
-    // Respond with the results for all households
     return res.status(200).json({
       success: true,
       message: "All data processed",
@@ -1261,4 +1281,5 @@ export const offlineSyncSurveyAllData = async (req, res) => {
     });
   }
 };
+
 

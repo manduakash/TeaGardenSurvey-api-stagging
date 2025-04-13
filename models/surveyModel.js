@@ -169,7 +169,10 @@ export async function insertHouseholdModelV1(
   longitude,
   family_income,
   total_members,
-  user_id
+  user_id,
+  family_head_img = null,
+  household_img = null,
+  family_head_signature_img = null
 ) {
   try {
     const params = [
@@ -184,30 +187,35 @@ export async function insertHouseholdModelV1(
       longitude,
       family_income,
       total_members,
-      user_id
+      user_id,
+      family_head_img,
+      household_img,
+      family_head_signature_img
     ];
 
     console.log("Calling sp_insertHouseholdV1 with params:", params);
 
-    // Call the stored procedure with two OUT params
+    // Call the stored procedure with 3 new image inputs + 2 OUT params
     await pool.query(
-      "CALL sp_insertHouseholdV1(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, @p_error_code, @p_household_id);",
+      "CALL sp_insertHouseholdV1(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, @p_error_code, @p_household_id);",
       params
     );
 
     // Fetch the OUT parameters
-    const [[result]] = await pool.query("SELECT @p_error_code AS error_code, @p_household_id AS household_id");
+    const [[result]] = await pool.query(
+      "SELECT @p_error_code AS error_code, @p_household_id AS household_id"
+    );
 
     return {
       error_code: result.error_code,
       household_id: result.household_id
     };
-
   } catch (error) {
-    console.error("insertHouseholdModel error:", error.message);
+    console.error("insertHouseholdModelV1 error:", error.message);
     return {
       error_code: 9,
       household_id: null
     };
   }
 }
+
