@@ -902,7 +902,6 @@ export const offlineSyncSurveyAllData = async (req, res) => {
 
       if (!user_id || !Array.isArray(family_members) || family_members.length === 0) {
         allResults.push({
-          household: householdData,
           success: false,
           message: "Missing required input fields or family member data."
         });
@@ -940,7 +939,6 @@ export const offlineSyncSurveyAllData = async (req, res) => {
 
       if (error_code !== 0 || !household_id) {
         allResults.push({
-          household: householdData,
           success: false,
           message: responseMap[error_code] || "Unknown error"
         });
@@ -1048,7 +1046,6 @@ export const offlineSyncSurveyAllData = async (req, res) => {
 
       if (failedMembers.length > 0) {
         allResults.push({
-          household: householdData,
           success: false,
           message: "Some records failed to save",
           household_id,
@@ -1056,7 +1053,6 @@ export const offlineSyncSurveyAllData = async (req, res) => {
         });
       } else {
         allResults.push({
-          household: householdData,
           success: true,
           message: "Household and all family data inserted successfully",
           household_id,
