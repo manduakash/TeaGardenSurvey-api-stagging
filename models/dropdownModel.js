@@ -79,8 +79,8 @@ export async function getTotalHouseholdsSurveyedDetailsModel(
         end_date,
       ]
     );
-
-    return rows; // Return first result set, or empty array
+    
+    return rows[1];
   } catch (error) {
     console.error("getTotalHouseholdsSurveyedDetailsModel error:", error.message);
     throw error;
