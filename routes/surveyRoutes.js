@@ -5,6 +5,7 @@ import {
   insertLivelihood,
   insertWelfare,
   insertConsolidatedFamilyData,
+  offlineSyncSurveyData,
 } from "../controllers/surveyController.js";
 const router = express.Router();
 
@@ -13,4 +14,5 @@ router.post("/insertHealth", insertHealth);
 router.post("/insertLivelihood", insertLivelihood);
 router.post("/insertWelfare", insertWelfare);
 router.post("/insertConsolidatedFamilyData", insertConsolidatedFamilyData);
+router.post("/offlineSyncSurveyData", offlineSyncSurveyData);
 export default router;
