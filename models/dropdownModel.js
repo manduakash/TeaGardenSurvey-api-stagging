@@ -105,7 +105,7 @@ export async function getHealthDetailsWithFiltersModel(
 ) {
   try {
     const [rows] = await pool.query(
-      "CALL sp_getHealthDetailsWithFiltersAndAgeGroup(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);",
+      "CALL sp_getHealthDetailsWithFiltersAndAgeGroup(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);",
       [
         state_id,
         district_id,
@@ -122,8 +122,8 @@ export async function getHealthDetailsWithFiltersModel(
         age_group,
       ]
     );
-
-    return rows?.[0] || []; // First result set
+console.log("rows[0]",rows)
+    return rows[0]  // First result set
   } catch (error) {
     console.error("getHealthDetailsWithFiltersModel error:", error.message);
     throw error;

@@ -293,19 +293,19 @@ export const getDistrictsByState = async (req, res) => {
       } = req.body;
   
       const results = await getHealthDetailsWithFiltersModel(
-        state_id || null,
-        district_id || null,
-        subdivision_id || null,
-        block_id || null,
-        village_id || null,
-        start_date || null,
-        end_date || null,
-        nutrition_status || null,
-        bp_status || null,
-        blood_sugar || null,
-        gender || null,
-        household_id || null,
-        age_group || null
+        state_id || 0,
+        district_id || 0,
+        subdivision_id || 0,
+        block_id || 0,
+        village_id || 0,
+        start_date || "",
+        end_date || "",
+        nutrition_status || "ALL",
+        bp_status || "ALL",
+        blood_sugar || "ALL",
+        gender || "ALL",
+        household_id || 0,
+        age_group || "ALL"
       );
   
       return res.status(200).json({
