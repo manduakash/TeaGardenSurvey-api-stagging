@@ -1,4 +1,4 @@
-import {getDistrictsByStateModel,getSubDivisionsByDistrictModel,getBlocksBySubDivisionModel, getGPsByBlockModel, getTotalHouseholdsSurveyedDetailsModel,getHealthDetailsWithFiltersModel,getMemberDetailsModel,getAllUserTypesModel} from "../models/dropdownModel.js";
+import {getDistrictsByStateModel,getSubDivisionsByDistrictModel,getBlocksBySubDivisionModel, getGPsByBlockModel, getTotalHouseholdsSurveyedDetailsModel,getHealthDetailsWithFiltersModel,getMemberDetailsModel,getAllUserTypesModel,getAllTrainingOptionsModel} from "../models/dropdownModel.js";
 import logger from "../utils/logger.js";
 
 export const getDistrictsByState = async (req, res) => {
@@ -404,6 +404,35 @@ export const getDistrictsByState = async (req, res) => {
       });
     }
   };
+
+
+  export const getAllTrainingOptions = async (req, res) => {
+    try {
+      const data = await getAllTrainingOptionsModel();
+  
+      if (data && data.length > 0) {
+        return res.status(200).json({
+          success: true,
+          message: "Training options fetched successfully",
+          data,
+        });
+      } else {
+        return res.status(404).json({
+          success: true,
+          message: "No training options found",
+          data: [],
+        });
+      }
+    } catch (error) {
+      console.error("getAllTrainingOptions error:", error.message);
+      return res.status(500).json({
+        success: false,
+        message: "Internal server error",
+        data: null,
+      });
+    }
+  };
+  
 
 
 

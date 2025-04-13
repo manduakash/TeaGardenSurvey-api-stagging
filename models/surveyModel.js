@@ -219,3 +219,21 @@ export async function insertHouseholdModelV1(
   }
 }
 
+
+
+export const insertTrainingOptionModel = async (training_name) => {
+  try {
+    const [rows] = await pool.query(
+      "CALL sp_insertTrainingOption(?, @p_status_code);",
+      [training_name]
+    );
+
+    const [[statusResult]] = await pool.query("SELECT @p_status_code AS status_code");
+
+    return statusResult?.status_code ?? 9; // Default to internal error
+  } catch (error) {
+    console.error("insertTrainingOptionModel error:", error.message);
+    return 9;
+  }
+};
+
