@@ -1,4 +1,4 @@
-import {getDistrictsByStateModel,getSubDivisionsByDistrictModel,getBlocksBySubDivisionModel, getGPsByBlockModel, getTotalHouseholdsSurveyedDetailsModel,getHealthDetailsWithFiltersModel} from "../models/dropdownModel.js";
+import {getDistrictsByStateModel,getSubDivisionsByDistrictModel,getBlocksBySubDivisionModel, getGPsByBlockModel, getTotalHouseholdsSurveyedDetailsModel,getHealthDetailsWithFiltersModel,getMemberDetailsModel} from "../models/dropdownModel.js";
 import logger from "../utils/logger.js";
 
 export const getDistrictsByState = async (req, res) => {
@@ -322,6 +322,62 @@ export const getDistrictsByState = async (req, res) => {
       });
     }
   };
+
+
+  export const getMemberDetails = async (req, res) => {
+    try {
+      const {
+        state_id,
+        district_id,
+        subdivision_id,
+        block_id,
+        village_id,
+        start_date,
+        end_date,
+      } = req.body;
+  
+      // Validate required fields
+      if (!(state_id)) {
+        return res.status(400).json({
+          success: false,
+          message: "Missing required input parameters",
+          data: null,
+        });
+      }
+  
+      const data = await getMemberDetailsModel(
+        state_id,
+        district_id,
+        subdivision_id,
+        block_id,
+        village_id,
+        start_date,
+        end_date
+      );
+  
+      if (data && data.length > 0) {
+        return res.status(200).json({
+          success: true,
+          message: "Member details fetched successfully",
+          data,
+        });
+      } else {
+        return res.status(404).json({
+          success: true,
+          message: "No member details found for given filters",
+          data: [],
+        });
+      }
+    } catch (error) {
+      console.error("getMemberDetails error:", error.message);
+      return res.status(500).json({
+        success: false,
+        message: "Internal server error",
+        data: null,
+      });
+    }
+  };
+  
 
 
  

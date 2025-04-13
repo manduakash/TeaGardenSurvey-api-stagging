@@ -129,3 +129,35 @@ console.log("rows[0]",rows)
     throw error;
   }
 }
+
+
+export const getMemberDetailsModel = async (
+  state_id,
+  district_id,
+  subdivision_id,
+  block_id,
+  village_id,
+  start_date,
+  end_date
+) => {
+  try {
+    const [rows] = await pool.query(
+      "CALL sp_getMemberDetails(?, ?, ?, ?, ?, ?, ?)",
+      [
+        state_id,
+        district_id,
+        subdivision_id,
+        block_id,
+        village_id,
+        start_date,
+        end_date
+      ]
+    );
+
+    return rows[0]; // MySQL procedures return nested result sets
+  } catch (error) {
+    console.error("getMemberDetailsModel error:", error.message);
+    return [];
+  }
+};
+
