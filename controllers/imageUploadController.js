@@ -38,3 +38,40 @@ export const uploadBase64Image = async (req, res) => {
     res.status(500).json({ success: false, message: 'Server error' });
   }
 };
+
+export const base64ToFileServer = async (image, filename) => {
+
+  if (!image) {
+    return { success: true, message: 'No image data provided', url: null };
+  }
+
+  try {
+    // Extract MIME type and base64 data
+    const matches = image.match(/^data:(image\/\w+);base64,(.+)$/);
+
+    if (!matches || matches.length !== 3) {
+      return { success: false, message: 'Invalid base64 string' };
+    }
+
+    const mimeType = matches[1]; // e.g., image/png
+    const imageBuffer = Buffer.from(matches[2], 'base64');
+
+    // Get extension
+    const extension = mimeType.split('/')[1]; // e.g., png, jpeg
+    const name = `${filename}.${extension}`;
+    const uploadPath = path.join(process.cwd(), 'uploads', name);
+
+    fs.writeFileSync(uploadPath, imageBuffer);
+
+    // ${req.protocol}://${req.get('host')}
+    const publicURL = `/uploads/${name}`;
+
+    return {
+      success: true,
+      url: publicURL,
+    };
+  } catch (err) {
+    console.error('Image upload error:', err.message);
+    return { success: false, message: 'Server error' };
+  }
+};
