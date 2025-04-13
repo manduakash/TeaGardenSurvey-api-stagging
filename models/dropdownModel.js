@@ -80,6 +80,8 @@ export async function getTotalHouseholdsSurveyedDetailsModel(
       ]
     );
 
+    console.log(rows);
+    
     return rows?.[0] || []; // Return first result set, or empty array
   } catch (error) {
     console.error("getTotalHouseholdsSurveyedDetailsModel error:", error.message);
