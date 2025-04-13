@@ -1,4 +1,4 @@
-import {getDistrictsByStateModel,getSubDivisionsByDistrictModel,getBlocksBySubDivisionModel, getGPsByBlockModel, getTotalHouseholdsSurveyedDetailsModel,getHealthDetailsWithFiltersModel,getMemberDetailsModel} from "../models/dropdownModel.js";
+import {getDistrictsByStateModel,getSubDivisionsByDistrictModel,getBlocksBySubDivisionModel, getGPsByBlockModel, getTotalHouseholdsSurveyedDetailsModel,getHealthDetailsWithFiltersModel,getMemberDetailsModel,getAllUserTypesModel} from "../models/dropdownModel.js";
 import logger from "../utils/logger.js";
 
 export const getDistrictsByState = async (req, res) => {
@@ -378,7 +378,37 @@ export const getDistrictsByState = async (req, res) => {
     }
   };
   
+  export const getAllUserTypes = async (req, res) => {
+    try {
+      const data = await getAllUserTypesModel();
+  
+      if (data && data.length > 0) {
+        return res.status(200).json({
+          success: true,
+          message: "User types fetched successfully",
+          data,
+        });
+      } else {
+        return res.status(404).json({
+          success: true,
+          message: "No user types found",
+          data: [],
+        });
+      }
+    } catch (error) {
+      console.error("getAllUserTypes error:", error.message);
+      return res.status(500).json({
+        success: false,
+        message: "Internal server error",
+        data: null,
+      });
+    }
+  };
 
+
+
+
+  
 
  
   

@@ -80,9 +80,7 @@ export async function getTotalHouseholdsSurveyedDetailsModel(
       ]
     );
 
-    console.log(rows);
-    
-    return rows?.[0] || []; // Return first result set, or empty array
+    return rows; // Return first result set, or empty array
   } catch (error) {
     console.error("getTotalHouseholdsSurveyedDetailsModel error:", error.message);
     throw error;
@@ -163,3 +161,12 @@ export const getMemberDetailsModel = async (
   }
 };
 
+export const getAllUserTypesModel = async () => {
+  try {
+    const [rows] = await pool.query("CALL sp_getAllUserTypes()");
+    return rows[0]; // Return the result set from the procedure
+  } catch (error) {
+    console.error("getAllUserTypesModel error:", error.message);
+    return [];
+  }
+};
