@@ -88,7 +88,7 @@ export async function insertHouseholdModel(
 
     console.log("Calling sp_insertHousehold with params:", params);
 
-    await pool.query("CALL sp_insertHousehold(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,@p_error_code);", params);
+    await pool.query("CALL sp_insertHousehold(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,@p_error_code);", params);
 
     const [[{ error_code }]] = await pool.query("SELECT @p_error_code AS error_code");
   

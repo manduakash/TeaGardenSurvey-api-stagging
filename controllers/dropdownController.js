@@ -1,4 +1,4 @@
-import {getDistrictsByStateModel,getSubDivisionsByDistrictModel,getBlocksBySubDivisionModel, getGPsByBlockModel} from "../models/dropdownModel.js";
+import {getDistrictsByStateModel,getSubDivisionsByDistrictModel,getBlocksBySubDivisionModel, getGPsByBlockModel, getTotalHouseholdsSurveyedDetailsModel,getHealthDetailsWithFiltersModel} from "../models/dropdownModel.js";
 import logger from "../utils/logger.js";
 
 export const getDistrictsByState = async (req, res) => {
@@ -225,5 +225,105 @@ export const getDistrictsByState = async (req, res) => {
       });
     }
   };
+  
+
+  export const getTotalHouseholdsSurveyedDetails = async (req, res) => {
+    try {
+      const {
+        state_id,
+        district_id,
+        subdivision_id,
+        block_id,
+        village_id,
+        start_date,
+        end_date,
+      } = req.body;
+  
+      // Optional validation
+      if (!start_date ) {
+        return res.status(400).json({
+          success: false,
+          message: "Start date and end date are required",
+          data: null,
+        });
+      }
+  
+      const result = await getTotalHouseholdsSurveyedDetailsModel(
+        state_id,
+        district_id,
+        subdivision_id,
+        block_id,
+        village_id,
+        start_date,
+        end_date
+      );
+  
+      return res.status(200).json({
+        success: true,
+        message: "Surveyed household details fetched successfully",
+        data: result,
+      });
+    } catch (error) {
+      console.error("getTotalHouseholdsSurveyedDetails error:", error.message);
+      return res.status(500).json({
+        success: false,
+        message: "Failed to fetch household survey details",
+        data: null,
+      });
+    }
+  };
+
+
+  export const getHealthDetailsWithFilters = async (req, res) => {
+    try {
+      const {
+        state_id,
+        district_id,
+        subdivision_id,
+        block_id,
+        village_id,
+        start_date,
+        end_date,
+        nutrition_status,
+        bp_status,
+        blood_sugar,
+        gender,
+        household_id,
+        age_group,
+      } = req.body;
+  
+      const results = await getHealthDetailsWithFiltersModel(
+        state_id || null,
+        district_id || null,
+        subdivision_id || null,
+        block_id || null,
+        village_id || null,
+        start_date || null,
+        end_date || null,
+        nutrition_status || null,
+        bp_status || null,
+        blood_sugar || null,
+        gender || null,
+        household_id || null,
+        age_group || null
+      );
+  
+      return res.status(200).json({
+        success: true,
+        message: "Health details fetched successfully",
+        data: results,
+      });
+    } catch (error) {
+      console.error("getHealthDetailsWithFilters error:", error.message);
+      return res.status(500).json({
+        success: false,
+        message: "Failed to fetch health details",
+        data: null,
+      });
+    }
+  };
+
+
+ 
   
   
