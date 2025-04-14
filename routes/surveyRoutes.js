@@ -4,7 +4,6 @@ import {
   insertHealth,
   insertLivelihood,
   insertWelfare,
-  insertConsolidatedFamilyData,
   offlineSyncSurveyData,
   offlineSyncSurveyAllData,
   insertHouseHoldAndFamilyMembersData,
@@ -15,7 +14,7 @@ router.post("/insertHousehold", insertHousehold);
 router.post("/insertHealth", insertHealth);
 router.post("/insertLivelihood", insertLivelihood);
 router.post("/insertWelfare", insertWelfare);
-router.post("/insertConsolidatedFamilyData", insertConsolidatedFamilyData);
+// router.post("/insertConsolidatedFamilyData", insertConsolidatedFamilyData);
 router.post("/offlineSyncSurveyData", offlineSyncSurveyData);
 router.post("/offlineSyncSurveyAllData", offlineSyncSurveyAllData);
 router.post("/insertHouseHoldAndFamilyMembersData", insertHouseHoldAndFamilyMembersData);

@@ -128,20 +128,28 @@ export async function insertLivelihoodModel(
 export async function insertWelfareModel(
   household_id,
   caste_certificate,
+  caste_certificate_id_no="",
   lakshmir_bhandar,
+  lakshmir_bhandar_card_no="",
   swasthya_sathi,
-  old_age_pension
+  swasthya_sathi_card_no="",
+  old_age_pension,
+  old_age_pension_id_no=""
 ) {
   try {
-    // Call SP with OUT parameter
+    // Call SP with all input parameters and the OUT parameter
     const [rows] = await pool.query(
-      "CALL sp_insertWelfare(?, ?, ?, ?, ?, @p_error_code);",
+      "CALL sp_insertWelfare(?, ?, ?, ?, ?, ?, ?, ?, ?, @p_error_code);",
       [
         household_id,
         caste_certificate,
+        caste_certificate_id_no,
         lakshmir_bhandar,
+        lakshmir_bhandar_card_no,
         swasthya_sathi,
+        swasthya_sathi_card_no,
         old_age_pension,
+        old_age_pension_id_no
       ]
     );
 
@@ -156,6 +164,7 @@ export async function insertWelfareModel(
     return 1; // Default failure code
   }
 }
+
 
 export async function insertHouseholdModelV1(
   state,
@@ -197,7 +206,7 @@ export async function insertHouseholdModelV1(
 
     // Call the stored procedure with 3 new image inputs + 2 OUT params
     await pool.query(
-      "CALL sp_insertHouseholdV1(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, @p_error_code, @p_household_id);",
+      "CALL sp_insertHouseholdV1(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, @p_error_code, @p_household_id);",
       params
     );
 
