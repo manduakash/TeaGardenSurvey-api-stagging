@@ -12,7 +12,9 @@ export async function insertHouseholdModel(
   longitude,
   family_income,
   total_members,
-  user_id
+  user_id,
+  family_head_name,
+    family_head_contact_number,
 ) {
   try {
     const params = [
@@ -28,12 +30,14 @@ export async function insertHouseholdModel(
       family_income,
       total_members,
       user_id,
+      family_head_name,
+    family_head_contact_number,
     ];
 
     console.log("Calling sp_insertHousehold with params:", params);
 
     await pool.query(
-      "CALL sp_insertHousehold(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,@p_error_code);",
+      "CALL sp_insertHousehold(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,?,?,@p_error_code);",
       params
     );
 

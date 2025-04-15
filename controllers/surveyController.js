@@ -22,6 +22,8 @@ export const insertHousehold = async (req, res) => {
     family_income,
     total_members,
     user_id,
+    family_head_name,
+    family_head_contact_number,
   } = req.body;
   console.log({
     state,
@@ -36,6 +38,8 @@ export const insertHousehold = async (req, res) => {
     family_income,
     total_members,
     user_id,
+    family_head_name,
+    family_head_contact_number,
   });
   // Basic validation
   if (!user_id == undefined) {
@@ -58,7 +62,9 @@ export const insertHousehold = async (req, res) => {
       longitude,
       family_income,
       total_members,
-      user_id
+      user_id,
+      family_head_name,
+    family_head_contact_number,
     );
 
     let response = {
