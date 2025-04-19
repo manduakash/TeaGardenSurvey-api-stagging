@@ -65,7 +65,7 @@ export const insertHousehold = async (req, res) => {
       total_members,
       user_id,
       family_head_name,
-    family_head_contact_number,
+      family_head_contact_number,
     );
 
     let response = {
@@ -508,6 +508,8 @@ export const insertHouseHoldAndFamilyMembersData = async (req, res) => {
     total_members,
     user_id,
     family_members,
+    family_head_name,
+    family_head_contact_number,
     family_head_img = null,
     household_img = null,
     family_head_signature_img = null,
@@ -591,6 +593,8 @@ export const insertHouseHoldAndFamilyMembersData = async (req, res) => {
       family_income,
       total_members,
       user_id,
+      family_head_name,
+      family_head_contact_number,
       family_head_img_response?.url
         ? `${req.protocol}://${req.get("host")}${family_head_img_response.url}`
         : "",
@@ -1312,8 +1316,6 @@ export const offlineSyncSurveyAllData = async (req, res) => {
     });
   }
 };
-
-
 
 export const insertTrainingOption = async (req, res) => {
   try {

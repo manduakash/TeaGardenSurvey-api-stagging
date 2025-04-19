@@ -183,6 +183,8 @@ export async function insertHouseholdModelV1(
   family_income,
   total_members,
   user_id,
+  family_head_name,
+  family_head_contact_number,
   family_head_img = null,
   household_img = null,
   family_head_signature_img = null
@@ -201,6 +203,8 @@ export async function insertHouseholdModelV1(
       family_income,
       total_members,
       user_id,
+      family_head_name,
+      family_head_contact_number,
       family_head_img,
       household_img,
       family_head_signature_img
@@ -210,7 +214,7 @@ export async function insertHouseholdModelV1(
 
     // Call the stored procedure with 3 new image inputs + 2 OUT params
     await pool.query(
-      "CALL sp_insertHouseholdV1(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, @p_error_code, @p_household_id);",
+      "CALL sp_insertHouseholdV1(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, @p_error_code, @p_household_id);",
       params
     );
 
