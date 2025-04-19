@@ -12,7 +12,9 @@ export async function insertHouseholdModel(
   longitude,
   family_income,
   total_members,
-  user_id
+  user_id,
+  family_head_name,
+    family_head_contact_number,
 ) {
   try {
     const params = [
@@ -28,12 +30,14 @@ export async function insertHouseholdModel(
       family_income,
       total_members,
       user_id,
+      family_head_name,
+    family_head_contact_number,
     ];
 
     console.log("Calling sp_insertHousehold with params:", params);
 
     await pool.query(
-      "CALL sp_insertHousehold(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,@p_error_code);",
+      "CALL sp_insertHousehold(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,?,?,@p_error_code);",
       params
     );
 
@@ -227,4 +231,22 @@ export async function insertHouseholdModelV1(
     };
   }
 }
+
+
+
+export const insertTrainingOptionModel = async (training_name) => {
+  try {
+    const [rows] = await pool.query(
+      "CALL sp_insertTrainingOption(?, @p_status_code);",
+      [training_name]
+    );
+
+    const [[statusResult]] = await pool.query("SELECT @p_status_code AS status_code");
+
+    return statusResult?.status_code ?? 9; // Default to internal error
+  } catch (error) {
+    console.error("insertTrainingOptionModel error:", error.message);
+    return 9;
+  }
+};
 

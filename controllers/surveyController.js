@@ -4,6 +4,7 @@ import {
   insertLivelihoodModel,
   insertWelfareModel,
   insertHouseholdModelV1,
+  insertTrainingOptionModel,
 } from "../models/surveyModel.js";
 import logger from "../utils/logger.js";
 import { base64ToFileServer } from "./imageUploadController.js";
@@ -22,6 +23,8 @@ export const insertHousehold = async (req, res) => {
     family_income,
     total_members,
     user_id,
+    family_head_name,
+    family_head_contact_number,
   } = req.body;
   console.log({
     state,
@@ -36,6 +39,8 @@ export const insertHousehold = async (req, res) => {
     family_income,
     total_members,
     user_id,
+    family_head_name,
+    family_head_contact_number,
   });
   // Basic validation
   if (!user_id == undefined) {
@@ -58,7 +63,9 @@ export const insertHousehold = async (req, res) => {
       longitude,
       family_income,
       total_members,
-      user_id
+      user_id,
+      family_head_name,
+    family_head_contact_number,
     );
 
     let response = {
@@ -1305,3 +1312,60 @@ export const offlineSyncSurveyAllData = async (req, res) => {
     });
   }
 };
+
+
+
+export const insertTrainingOption = async (req, res) => {
+  try {
+    const { training_name } = req.body;
+
+    // Input validation
+    if (!training_name) {
+      return res.status(400).json({
+        success: false,
+        message: "Training name is required",
+        data: null,
+      });
+    }
+
+    const statusCode = await insertTrainingOptionModel(training_name);
+
+    let message = "Unknown error occurred";
+    let success = false;
+    let status = 400;
+
+    switch (statusCode) {
+      case 0:
+        message = "Training option inserted successfully";
+        success = true;
+        status = 200;
+        break;
+      case 1:
+        message = "Duplicate training name";
+        break;
+      case 2:
+        message = "Invalid training name format";
+        break;
+      case 9:
+        message = "Internal server error";
+        status = 500;
+        break;
+    }
+
+    return res.status(status).json({
+      success,
+      message,
+      data: null,
+    });
+
+  } catch (error) {
+    console.error("insertTrainingOption error:", error.message);
+    return res.status(500).json({
+      success: false,
+      message: "Internal server error",
+      data: null,
+    });
+  }
+};
+
+

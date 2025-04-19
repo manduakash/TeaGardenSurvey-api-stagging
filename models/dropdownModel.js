@@ -164,9 +164,22 @@ export const getMemberDetailsModel = async (
 export const getAllUserTypesModel = async () => {
   try {
     const [rows] = await pool.query("CALL sp_getAllUserTypes()");
-    return rows[0]; // Return the result set from the procedure
+    return rows; // Return the result set from the procedure
   } catch (error) {
     console.error("getAllUserTypesModel error:", error.message);
     return [];
   }
 };
+
+
+
+export const getAllTrainingOptionsModel = async () => {
+  try {
+    const [rows] = await pool.query("CALL sp_getAllTrainingOptions()");
+    return rows[0]; // Returns the first result set from the SP
+  } catch (error) {
+    console.error("getAllTrainingOptionsModel error:", error.message);
+    return [];
+  }
+};
+
