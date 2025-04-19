@@ -59,7 +59,8 @@ export const base64ToFileServer = async (image, filename) => {
     // Get extension
     const extension = mimeType.split('/')[1]; // e.g., png, jpeg
     const name = `${filename}.${extension}`;
-    const uploadPath = path.join(process.cwd(), 'uploads', name);
+    // const uploadPath = path.join(process.cwd(), 'uploads', name);
+    const uploadPath = path.join('/uploads', name);
 
     fs.writeFileSync(uploadPath, imageBuffer);
 
