@@ -66,6 +66,7 @@ export const insertHousehold = async (req, res) => {
       user_id,
       family_head_name,
       family_head_contact_number,
+      family_head_contact_number,
     );
 
     let response = {
