@@ -20,7 +20,8 @@ const host = process.env.API_HOST || 3003;
 const port = process.env.API_PORT || 3003;
 
 // Serve /uploads as static folder
-app.use('/uploads', express.static(path.join(process.cwd(), 'uploads')));
+// app.use('/uploads', express.static(path.join(process.cwd(), 'uploads')));
+app.use('/uploads', express.static('/uploads'));
 // for api input in body (json)
 app.use(express.json({ limit: "25mb" }));
 // for api input in form-date
