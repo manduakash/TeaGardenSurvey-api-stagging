@@ -183,3 +183,224 @@ export const getAllTrainingOptionsModel = async () => {
   }
 };
 
+export const getSurveyorDashboardCountModel = async (
+  surveyor_user_id
+ 
+) => {
+  try {
+    const [rows] = await pool.query(
+      "CALL sp_getSurveyorDashboardCount(?)",
+      [
+        surveyor_user_id
+       
+      ]
+    );
+
+    return rows[0]; // MySQL procedures return nested result sets
+  } catch (error) {
+    console.error("getSurveyorDashboardCountModel error:", error.message);
+    return [];
+  }
+};
+
+
+export async function getHouseholdSurveyCountAnalyticsModel(
+  state_id,
+  district_id,
+  subdivision_id,
+  block_id,
+  village_id,
+  start_date,
+  end_date
+) {
+  try {
+    const [rows] = await pool.query(
+      "CALL sp_getHouseholdSurveyCountAnalytics(?, ?, ?, ?, ?, ?, ?)",
+      [
+        state_id,
+        district_id,
+        subdivision_id,
+        block_id,
+        village_id,
+        start_date,
+        end_date
+      ]
+    );
+
+    
+
+    return rows[0]; // First set of rows is the actual result
+  } catch (error) {
+    logger.error("getHouseholdSurveyCountAnalyticsModel error:", error);
+    throw error;
+  }
+}
+
+
+export const getHealthDetailsCountAnalyticsModel = async (
+  state_id,
+  district_id,
+  subdivision_id,
+  block_id,
+  village_id,
+  start_date,
+  end_date
+) => {
+  try {
+    const [rows] = await pool.query(
+      "CALL sp_getHealthDetailsCountAnalytics(?, ?, ?, ?, ?, ?, ?)",
+      [
+        state_id,
+        district_id,
+        subdivision_id,
+        block_id,
+        village_id,
+        start_date,
+        end_date
+      ]
+    );
+    
+
+    
+
+    return rows[0]; // First result set from SP
+  } catch (error) {
+    logger.error("getHealthDetailsCountAnalyticsModel error:", error.message);
+    return [];
+  }
+};
+
+
+export const getSchemeEnrollmentCountAnalyticsModel = async (
+  state_id,
+  district_id,
+  subdivision_id,
+  block_id,
+  village_id,
+  start_date,
+  end_date
+) => {
+  try {
+    const [rows] = await pool.query(
+      "CALL sp_getSchemeEnrollmentCountAnalytics(?, ?, ?, ?, ?, ?, ?)",
+      [
+        state_id,
+        district_id,
+        subdivision_id,
+        block_id,
+        village_id,
+        start_date,
+        end_date
+      ]
+    );
+    
+
+    
+
+    return rows[0]; // First result set from SP
+  } catch (error) {
+    logger.error("getHealthDetailsCountAnalyticsModel error:", error.message);
+    return [];
+  }
+};
+
+
+export const getLowBirthWeigthCountAnalyticsModel = async (
+  state_id,
+  district_id,
+  subdivision_id,
+  block_id,
+  village_id,
+  start_date,
+  end_date
+) => {
+  try {
+    const [rows] = await pool.query(
+      "CALL sp_getLowBirthWeigthCountAnalytics(?, ?, ?, ?, ?, ?, ?)",
+      [
+        state_id,
+        district_id,
+        subdivision_id,
+        block_id,
+        village_id,
+        start_date,
+        end_date
+      ]
+    );
+    
+
+    
+
+    return rows[0]; // First result set from SP
+  } catch (error) {
+    logger.error("getHealthDetailsCountAnalyticsModel error:", error.message);
+    return [];
+  }
+};
+
+
+export const getWelfareProgramCountAnalyticsModel = async (
+  state_id,
+  district_id,
+  subdivision_id,
+  block_id,
+  village_id,
+  start_date,
+  end_date
+) => {
+  try {
+    const [rows] = await pool.query(
+      "CALL sp_getWelfareProgramCountAnalytics(?, ?, ?, ?, ?, ?, ?)",
+      [
+        state_id,
+        district_id,
+        subdivision_id,
+        block_id,
+        village_id,
+        start_date,
+        end_date
+      ]
+    );
+    
+
+    
+
+    return rows[0]; // First result set from SP
+  } catch (error) {
+    logger.error("getHealthDetailsCountAnalyticsModel error:", error.message);
+    return [];
+  }
+};
+
+export const gethouseHoldCountAnalyticsModel = async (
+  state_id,
+  district_id,
+  subdivision_id,
+  block_id,
+  village_id,
+  start_date,
+  end_date
+) => {
+  try {
+    const [rows] = await pool.query(
+      "CALL sp_gethouseHoldCountAnalytics(?, ?, ?, ?, ?, ?, ?)",
+      [
+        state_id,
+        district_id,
+        subdivision_id,
+        block_id,
+        village_id,
+        start_date,
+        end_date
+      ]
+    );
+    
+
+    
+
+    return rows[0]; // First result set from SP
+  } catch (error) {
+    logger.error("getHealthDetailsCountAnalyticsModel error:", error.message);
+    return [];
+  }
+};
