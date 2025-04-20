@@ -404,3 +404,70 @@ export const gethouseHoldCountAnalyticsModel = async (
     return [];
   }
 };
+
+export const getTotalWelfareDetailsModel = async (
+  state_id,
+  district_id,
+  subdivision_id,
+  block_id,
+  village_id,
+  start_date,
+  end_date
+) => {
+  try {
+    const [rows] = await pool.query(
+      "CALL sp_getTotalWelfareDetails(?, ?, ?, ?, ?, ?, ?)",
+      [
+        state_id,
+        district_id,
+        subdivision_id,
+        block_id,
+        village_id,
+        start_date,
+        end_date
+      ]
+    );
+    
+
+    
+
+    return rows[0]; // First result set from SP
+  } catch (error) {
+    logger.error("getHealthDetailsCountAnalyticsModel error:", error.message);
+    return [];
+  }
+};
+
+
+export const getTotalLivelihoodDetailsModel = async (
+  state_id,
+  district_id,
+  subdivision_id,
+  block_id,
+  village_id,
+  start_date,
+  end_date
+) => {
+  try {
+    const [rows] = await pool.query(
+      "CALL sp_getTotalLivelihoodDetails(?, ?, ?, ?, ?, ?, ?)",
+      [
+        state_id,
+        district_id,
+        subdivision_id,
+        block_id,
+        village_id,
+        start_date,
+        end_date
+      ]
+    );
+    
+
+    
+
+    return rows[0]; // First result set from SP
+  } catch (error) {
+    logger.error("getHealthDetailsCountAnalyticsModel error:", error.message);
+    return [];
+  }
+};
