@@ -2,7 +2,7 @@ import express from "express";
 import { getDistrictsByState ,getSubDivisionsByDistrict,getBlocksBySubDivision,getGPsByBlock,getTotalHouseholdsSurveyedDetails,
     getHealthDetailsWithFilters,getMemberDetails,getAllUserTypes,getAllTrainingOptions,getSurveyorDashboardCount,
     getHouseholdSurveyCountAnalytics,getHealthDetailsCountAnalytics,getSchemeEnrollmentCountAnalytics,
-    getLowBirthWeigthCountAnalytics,getWelfareProgramCountAnalytics,gethouseHoldCountAnalytics} from '../controllers/dropdownController.js';
+    getLowBirthWeigthCountAnalytics,getWelfareProgramCountAnalytics,gethouseHoldCountAnalytics,getTotalWelfareDetails,getTotalLivelihoodDetails } from '../controllers/dropdownController.js';
 const router = express.Router();
 
 
@@ -23,5 +23,8 @@ router.post('/getSchemeEnrollmentCountAnalytics', getSchemeEnrollmentCountAnalyt
 router.post('/getLowBirthWeigthCountAnalytics', getLowBirthWeigthCountAnalytics);
 router.post('/getWelfareProgramCountAnalytics', getWelfareProgramCountAnalytics);
 router.post('/gethouseHoldCountAnalytics', gethouseHoldCountAnalytics);
+router.post('/getTotalWelfareDetails', getTotalWelfareDetails);
+
+router.post('/getTotalLivelihoodDetails', getTotalLivelihoodDetails );
 
 export default router;

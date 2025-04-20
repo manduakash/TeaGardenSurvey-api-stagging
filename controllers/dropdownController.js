@@ -2,7 +2,8 @@ import {getDistrictsByStateModel,getSubDivisionsByDistrictModel,getBlocksBySubDi
    getTotalHouseholdsSurveyedDetailsModel,getHealthDetailsWithFiltersModel,
    getMemberDetailsModel,getAllUserTypesModel,getAllTrainingOptionsModel,
    getSurveyorDashboardCountModel,getHouseholdSurveyCountAnalyticsModel,getHealthDetailsCountAnalyticsModel,
-   getSchemeEnrollmentCountAnalyticsModel,getLowBirthWeigthCountAnalyticsModel,getWelfareProgramCountAnalyticsModel,gethouseHoldCountAnalyticsModel} from "../models/dropdownModel.js";
+   getSchemeEnrollmentCountAnalyticsModel,getLowBirthWeigthCountAnalyticsModel,
+   getWelfareProgramCountAnalyticsModel,gethouseHoldCountAnalyticsModel,getTotalWelfareDetailsModel,getTotalLivelihoodDetailsModel} from "../models/dropdownModel.js";
 import logger from "../utils/logger.js";
 
 export const getDistrictsByState = async (req, res) => {
@@ -828,6 +829,134 @@ export const getDistrictsByState = async (req, res) => {
         return res.status(200).json({
           success: true,
           message: "Health details count fetched successfully",
+          data,
+        });
+      } else {
+        return res.status(404).json({
+          success: true,
+          message: "No data found for the given filters",
+          data: [],
+        });
+      }
+    } catch (error) {
+      logger.error("getHealthDetailsCountAnalytics error:", error.message);
+      return res.status(500).json({
+        success: false,
+        message: "Server error occurred",
+        data: null,
+      });
+    }
+  };
+
+
+  export const getTotalWelfareDetails = async (req, res) => {
+    try {
+      const {
+        state_id,
+        district_id,
+        subdivision_id,
+        block_id,
+        village_id,
+        start_date,
+        end_date,
+      } = req.body;
+  
+      if (!state_id ) {
+        logger.debug("Missing input parameters", {
+          state_id,
+          district_id,
+          subdivision_id,
+          block_id,
+          village_id,
+          start_date,
+          end_date,
+        });
+  
+        return res.status(400).json({
+          success: false,
+          message: "Missing required input parameters",
+          data: null,
+        });
+      }
+  
+      const data = await getTotalWelfareDetailsModel(
+        state_id,
+        district_id,
+        subdivision_id,
+        block_id,
+        village_id,
+        start_date,
+        end_date
+      );
+  
+      if (data && data.length > 0) {
+        return res.status(200).json({
+          success: true,
+          message: "Welfare details count fetched successfully",
+          data,
+        });
+      } else {
+        return res.status(404).json({
+          success: true,
+          message: "No data found for the given filters",
+          data: [],
+        });
+      }
+    } catch (error) {
+      logger.error("getHealthDetailsCountAnalytics error:", error.message);
+      return res.status(500).json({
+        success: false,
+        message: "Server error occurred",
+        data: null,
+      });
+    }
+  };
+
+
+  export const getTotalLivelihoodDetails = async (req, res) => {
+    try {
+      const {
+        state_id,
+        district_id,
+        subdivision_id,
+        block_id,
+        village_id,
+        start_date,
+        end_date,
+      } = req.body;
+  
+      if (!state_id ) {
+        logger.debug("Missing input parameters", {
+          state_id,
+          district_id,
+          subdivision_id,
+          block_id,
+          village_id,
+          start_date,
+          end_date,
+        });
+  
+        return res.status(400).json({
+          success: false,
+          message: "Missing required input parameters",
+          data: null,
+        });
+      }
+  
+      const data = await getTotalLivelihoodDetailsModel(
+        state_id,
+        district_id,
+        subdivision_id,
+        block_id,
+        village_id,
+        start_date,
+        end_date
+      );
+  
+      if (data && data.length > 0) {
+        return res.status(200).json({
+          success: true,
+          message: "Liveli hood details count fetched successfully",
           data,
         });
       } else {
