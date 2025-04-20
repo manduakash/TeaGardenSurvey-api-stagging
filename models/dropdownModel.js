@@ -431,7 +431,7 @@ export const getTotalWelfareDetailsModel = async (
 
     
 
-    return rows[0]; // First result set from SP
+    return rows[1]; // First result set from SP
   } catch (error) {
     logger.error("getHealthDetailsCountAnalyticsModel error:", error.message);
     return [];
@@ -465,7 +465,7 @@ export const getTotalLivelihoodDetailsModel = async (
 
     
 
-    return rows[0]; // First result set from SP
+    return rows[1]; // First result set from SP
   } catch (error) {
     logger.error("getHealthDetailsCountAnalyticsModel error:", error.message);
     return [];
