@@ -1,4 +1,8 @@
-import {getDistrictsByStateModel,getSubDivisionsByDistrictModel,getBlocksBySubDivisionModel, getGPsByBlockModel, getTotalHouseholdsSurveyedDetailsModel,getHealthDetailsWithFiltersModel,getMemberDetailsModel,getAllUserTypesModel,getAllTrainingOptionsModel} from "../models/dropdownModel.js";
+import {getDistrictsByStateModel,getSubDivisionsByDistrictModel,getBlocksBySubDivisionModel, getGPsByBlockModel,
+   getTotalHouseholdsSurveyedDetailsModel,getHealthDetailsWithFiltersModel,
+   getMemberDetailsModel,getAllUserTypesModel,getAllTrainingOptionsModel,
+   getSurveyorDashboardCountModel,getHouseholdSurveyCountAnalyticsModel,getHealthDetailsCountAnalyticsModel,
+   getSchemeEnrollmentCountAnalyticsModel,getLowBirthWeigthCountAnalyticsModel,getWelfareProgramCountAnalyticsModel,gethouseHoldCountAnalyticsModel} from "../models/dropdownModel.js";
 import logger from "../utils/logger.js";
 
 export const getDistrictsByState = async (req, res) => {
@@ -433,12 +437,412 @@ export const getDistrictsByState = async (req, res) => {
     }
   };
   
+  
+  export const getSurveyorDashboardCount = async (req, res) => {
+    try {
+      const {
+        surveyor_user_id
+       
+      } = req.body;
+  
+      // Validate required fields
+      if (!(surveyor_user_id)) {
+        return res.status(400).json({
+          success: false,
+          message: "Missing required input parameters",
+          data: null,
+        });
+      }
+  
+      const data = await getSurveyorDashboardCountModel(
+        surveyor_user_id
+       
+      );
+  
+      if (data && data.length > 0) {
+        return res.status(200).json({
+          success: true,
+          message: "Member details fetched successfully",
+          data,
+        });
+      } else {
+        return res.status(404).json({
+          success: true,
+          message: "No member details found for given filters",
+          data: [],
+        });
+      }
+    } catch (error) {
+      console.error("getMemberDetails error:", error.message);
+      return res.status(500).json({
+        success: false,
+        message: "Internal server error",
+        data: null,
+      });
+    }
+  };
 
-
-
-
+  export const getHouseholdSurveyCountAnalytics = async (req, res) => {
+    try {
+      const {
+        state_id,
+        district_id,
+        subdivision_id,
+        block_id,
+        village_id,
+        start_date,
+        end_date
+      } = req.body;
+  
+      if (!state_id ) {
+        return res.status(400).json({
+          success: false,
+          message: "Missing required input parameters",
+          data: null,
+        });
+      }
+  
+      const result = await getHouseholdSurveyCountAnalyticsModel(
+        state_id,
+        district_id,
+        subdivision_id,
+        block_id,
+        village_id,
+        start_date,
+        end_date
+      );
+  
+      return res.status(200).json({
+        success: true,
+        message: "Household survey analytics fetched successfully",
+        data: result,
+      });
+    } catch (error) {
+      logger.error("getHouseholdSurveyCountAnalytics controller error:", error);
+      return res.status(500).json({
+        success: false,
+        message: "Server error occurred",
+        data: null,
+      });
+    }
+  };
   
 
+  export const getHealthDetailsCountAnalytics = async (req, res) => {
+    try {
+      const {
+        state_id,
+        district_id,
+        subdivision_id,
+        block_id,
+        village_id,
+        start_date,
+        end_date,
+      } = req.body;
+  
+      if (!state_id ) {
+        logger.debug("Missing input parameters", {
+          state_id,
+          district_id,
+          subdivision_id,
+          block_id,
+          village_id,
+          start_date,
+          end_date,
+        });
+  
+        return res.status(400).json({
+          success: false,
+          message: "Missing required input parameters",
+          data: null,
+        });
+      }
+  
+      const data = await getHealthDetailsCountAnalyticsModel(
+        state_id,
+        district_id,
+        subdivision_id,
+        block_id,
+        village_id,
+        start_date,
+        end_date
+      );
+  
+      if (data && data.length > 0) {
+        return res.status(200).json({
+          success: true,
+          message: "Health details count fetched successfully",
+          data,
+        });
+      } else {
+        return res.status(404).json({
+          success: true,
+          message: "No data found for the given filters",
+          data: [],
+        });
+      }
+    } catch (error) {
+      logger.error("getHealthDetailsCountAnalytics error:", error.message);
+      return res.status(500).json({
+        success: false,
+        message: "Server error occurred",
+        data: null,
+      });
+    }
+  };
+  
+
+  export const getSchemeEnrollmentCountAnalytics = async (req, res) => {
+    try {
+      const {
+        state_id,
+        district_id,
+        subdivision_id,
+        block_id,
+        village_id,
+        start_date,
+        end_date,
+      } = req.body;
+  
+      if (!state_id ) {
+        logger.debug("Missing input parameters", {
+          state_id,
+          district_id,
+          subdivision_id,
+          block_id,
+          village_id,
+          start_date,
+          end_date,
+        });
+  
+        return res.status(400).json({
+          success: false,
+          message: "Missing required input parameters",
+          data: null,
+        });
+      }
+  
+      const data = await getSchemeEnrollmentCountAnalyticsModel(
+        state_id,
+        district_id,
+        subdivision_id,
+        block_id,
+        village_id,
+        start_date,
+        end_date
+      );
+  
+      if (data && data.length > 0) {
+        return res.status(200).json({
+          success: true,
+          message: "Health details count fetched successfully",
+          data,
+        });
+      } else {
+        return res.status(404).json({
+          success: true,
+          message: "No data found for the given filters",
+          data: [],
+        });
+      }
+    } catch (error) {
+      logger.error("getHealthDetailsCountAnalytics error:", error.message);
+      return res.status(500).json({
+        success: false,
+        message: "Server error occurred",
+        data: null,
+      });
+    }
+  };
+
+  
+  export const getLowBirthWeigthCountAnalytics  = async (req, res) => {
+    try {
+      const {
+        state_id,
+        district_id,
+        subdivision_id,
+        block_id,
+        village_id,
+        start_date,
+        end_date,
+      } = req.body;
+  
+      if (!state_id ) {
+        logger.debug("Missing input parameters", {
+          state_id,
+          district_id,
+          subdivision_id,
+          block_id,
+          village_id,
+          start_date,
+          end_date,
+        });
+  
+        return res.status(400).json({
+          success: false,
+          message: "Missing required input parameters",
+          data: null,
+        });
+      }
+  
+      const data = await getLowBirthWeigthCountAnalyticsModel(
+        state_id,
+        district_id,
+        subdivision_id,
+        block_id,
+        village_id,
+        start_date,
+        end_date
+      );
+  
+      if (data && data.length > 0) {
+        return res.status(200).json({
+          success: true,
+          message: "Health details count fetched successfully",
+          data,
+        });
+      } else {
+        return res.status(404).json({
+          success: true,
+          message: "No data found for the given filters",
+          data: [],
+        });
+      }
+    } catch (error) {
+      logger.error("getHealthDetailsCountAnalytics error:", error.message);
+      return res.status(500).json({
+        success: false,
+        message: "Server error occurred",
+        data: null,
+      });
+    }
+  };
+
+
+  export const getWelfareProgramCountAnalytics = async (req, res) => {
+    try {
+      const {
+        state_id,
+        district_id,
+        subdivision_id,
+        block_id,
+        village_id,
+        start_date,
+        end_date,
+      } = req.body;
+  
+      if (!state_id ) {
+        logger.debug("Missing input parameters", {
+          state_id,
+          district_id,
+          subdivision_id,
+          block_id,
+          village_id,
+          start_date,
+          end_date,
+        });
+  
+        return res.status(400).json({
+          success: false,
+          message: "Missing required input parameters",
+          data: null,
+        });
+      }
+  
+      const data = await getWelfareProgramCountAnalyticsModel(
+        state_id,
+        district_id,
+        subdivision_id,
+        block_id,
+        village_id,
+        start_date,
+        end_date
+      );
+  
+      if (data && data.length > 0) {
+        return res.status(200).json({
+          success: true,
+          message: "Health details count fetched successfully",
+          data,
+        });
+      } else {
+        return res.status(404).json({
+          success: true,
+          message: "No data found for the given filters",
+          data: [],
+        });
+      }
+    } catch (error) {
+      logger.error("getHealthDetailsCountAnalytics error:", error.message);
+      return res.status(500).json({
+        success: false,
+        message: "Server error occurred",
+        data: null,
+      });
+    }
+  };
+  
  
+  export const gethouseHoldCountAnalytics = async (req, res) => {
+    try {
+      const {
+        state_id,
+        district_id,
+        subdivision_id,
+        block_id,
+        village_id,
+        start_date,
+        end_date,
+      } = req.body;
   
+      if (!state_id ) {
+        logger.debug("Missing input parameters", {
+          state_id,
+          district_id,
+          subdivision_id,
+          block_id,
+          village_id,
+          start_date,
+          end_date,
+        });
   
+        return res.status(400).json({
+          success: false,
+          message: "Missing required input parameters",
+          data: null,
+        });
+      }
+  
+      const data = await gethouseHoldCountAnalyticsModel(
+        state_id,
+        district_id,
+        subdivision_id,
+        block_id,
+        village_id,
+        start_date,
+        end_date
+      );
+  
+      if (data && data.length > 0) {
+        return res.status(200).json({
+          success: true,
+          message: "Health details count fetched successfully",
+          data,
+        });
+      } else {
+        return res.status(404).json({
+          success: true,
+          message: "No data found for the given filters",
+          data: [],
+        });
+      }
+    } catch (error) {
+      logger.error("getHealthDetailsCountAnalytics error:", error.message);
+      return res.status(500).json({
+        success: false,
+        message: "Server error occurred",
+        data: null,
+      });
+    }
+  };
