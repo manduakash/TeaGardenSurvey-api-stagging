@@ -223,6 +223,12 @@ export async function insertHouseholdModelV1(
       "SELECT @p_error_code AS error_code, @p_household_id AS household_id"
     );
 
+    console.log({
+      error_code: result.error_code,
+      household_id: result.household_id
+    });
+    
+
     return {
       error_code: result.error_code,
       household_id: result.household_id
