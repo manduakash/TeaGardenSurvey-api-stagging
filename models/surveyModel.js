@@ -169,7 +169,6 @@ export async function insertWelfareModel(
   }
 }
 
-
 export async function insertHouseholdModelV1(
   state,
   district,
@@ -242,8 +241,6 @@ export async function insertHouseholdModelV1(
   }
 }
 
-
-
 export const insertTrainingOptionModel = async (training_name) => {
   try {
     const [rows] = await pool.query(
@@ -260,3 +257,16 @@ export const insertTrainingOptionModel = async (training_name) => {
   }
 };
 
+export const getHouseholdBySurveyOrContactModel = async (input_value) => {
+  try {
+    const [rows] = await pool.query(
+      "CALL sp_getHouseholdBySurveyOrFamilyHeadContact(?)",
+      [input_value]
+    );
+
+    return rows[0]; // MySQL procedures return nested result sets
+  } catch (error) {
+    console.error("getHouseholdBySurveyOrContactModel error:", error.message);
+    return [];
+  }
+};

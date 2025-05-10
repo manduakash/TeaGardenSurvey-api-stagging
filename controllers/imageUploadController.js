@@ -1,5 +1,10 @@
 import fs from 'fs';
 import path from 'path';
+import { fileURLToPath } from 'url';
+
+// Simulate __dirname
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 export const uploadBase64Image = async (req, res) => {
   const { image, filename } = req.body;
@@ -40,31 +45,30 @@ export const uploadBase64Image = async (req, res) => {
 };
 
 export const base64ToFileServer = async (image, filename) => {
-
   if (!image) {
     return { success: true, message: 'No image data provided', url: null };
   }
 
   try {
-    // Extract MIME type and base64 data
     const matches = image.match(/^data:(image\/\w+);base64,(.+)$/);
 
     if (!matches || matches.length !== 3) {
       return { success: false, message: 'Invalid base64 string' };
     }
 
-    const mimeType = matches[1]; // e.g., image/png
+    const mimeType = matches[1];
     const imageBuffer = Buffer.from(matches[2], 'base64');
-
-    // Get extension
-    const extension = mimeType.split('/')[1]; // e.g., png, jpeg
+    const extension = mimeType.split('/')[1];
     const name = `${filename}.${extension}`;
-    // const uploadPath = path.join(process.cwd(), 'uploads', name);
-    const uploadPath = path.join('/uploads', name);
 
+    const uploadDir = path.join(__dirname, '..', 'uploads'); // Adjust as needed
+    if (!fs.existsSync(uploadDir)) {
+      fs.mkdirSync(uploadDir, { recursive: true });
+    }
+
+    const uploadPath = path.join(uploadDir, name);
     fs.writeFileSync(uploadPath, imageBuffer);
 
-    // ${req.protocol}://${req.get('host')}
     const publicURL = `/uploads/${name}`;
 
     return {
@@ -72,6 +76,8 @@ export const base64ToFileServer = async (image, filename) => {
       url: publicURL,
     };
   } catch (err) {
+    console.log('Error writing file:', err.message);
+    
     console.error('Image upload error:', err.message);
     return { success: false, message: 'Server error' };
   }
