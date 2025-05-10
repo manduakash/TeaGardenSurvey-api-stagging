@@ -8,6 +8,7 @@ import {
   offlineSyncSurveyAllData,
   insertHouseHoldAndFamilyMembersData,
   insertTrainingOption,
+  getHouseholdBySurveyOrContact,
 } from "../controllers/surveyController.js";
 const router = express.Router();
 
@@ -20,4 +21,5 @@ router.post("/offlineSyncSurveyData", offlineSyncSurveyData);
 router.post("/offlineSyncSurveyAllData", offlineSyncSurveyAllData);
 router.post("/insertHouseHoldAndFamilyMembersData", insertHouseHoldAndFamilyMembersData);
 router.post("/insertTrainingOption", insertTrainingOption);
+router.post("/getHouseholdBySurveyOrContact", getHouseholdBySurveyOrContact);
 export default router;
