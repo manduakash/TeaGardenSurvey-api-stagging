@@ -5,6 +5,7 @@ import {
   insertWelfareModel,
   insertHouseholdModelV1,
   insertTrainingOptionModel,
+  getHouseholdBySurveyOrContactModel,
 } from "../models/surveyModel.js";
 import logger from "../utils/logger.js";
 import { base64ToFileServer } from "./imageUploadController.js";
@@ -25,33 +26,57 @@ export const insertHousehold = async (req, res) => {
     user_id,
     family_head_name,
     family_head_contact_number,
+    family_head_img = null,
+    household_img = null,
+    family_head_signature_img = null,
   } = req.body;
-  console.log({
-    state,
-    district,
-    sub_division,
-    block,
-    gp,
-    village,
-    house_number,
-    latitude,
-    longitude,
-    family_income,
-    total_members,
-    user_id,
-    family_head_name,
-    family_head_contact_number,
-  });
-  // Basic validation
-  if (!user_id == undefined) {
+
+  if (
+    !user_id ||
+    !state ||
+    !house_number
+  ) {
     return res.status(400).json({
       success: false,
-      message: "Missing required input fields",
+      message: "Missing required household fields.",
     });
   }
 
   try {
-    const errorCode = await insertHouseholdModel(
+    const family_head_img_response = await base64ToFileServer(
+      family_head_img,
+      `family_head_img_${district}_${sub_division}_${block}_${gp}_${village}_${house_number.replace("/", "-")}`
+    );
+    if (!family_head_img_response?.success) {
+      return res.status(400).json({
+        success: false,
+        message: `family_head_img: ${family_head_img_response?.message || "Failed to upload"}`,
+      });
+    }
+
+    const household_img_response = await base64ToFileServer(
+      household_img,
+      `household_img_${district}_${sub_division}_${block}_${gp}_${village}_${house_number.replace("/", "-")}`
+    );
+    if (!household_img_response?.success) {
+      return res.status(400).json({
+        success: false,
+        message: `household_img: ${household_img_response?.message || "Failed to upload"}`,
+      });
+    }
+
+    const family_head_signature_img_response = await base64ToFileServer(
+      family_head_signature_img,
+      `family_head_signature_img_${district}_${sub_division}_${block}_${gp}_${village}_${house_number.replace("/", "-")}`
+    );
+    if (!family_head_signature_img_response?.success) {
+      return res.status(400).json({
+        success: false,
+        message: `family_head_signature_img: ${family_head_signature_img_response?.message || "Failed to upload"}`,
+      });
+    }
+
+    const { error_code, household_id } = await insertHouseholdModelV1(
       state,
       district,
       sub_division,
@@ -66,33 +91,45 @@ export const insertHousehold = async (req, res) => {
       user_id,
       family_head_name,
       family_head_contact_number,
-      family_head_contact_number,
+      family_head_img_response?.url
+        ? `${req.protocol}://${req.get("host")}${family_head_img_response.url}`
+        : "",
+      household_img_response?.url
+        ? `${req.protocol}://${req.get("host")}${household_img_response.url}`
+        : "",
+      family_head_signature_img_response?.url
+        ? `${req.protocol}://${req.get("host")}${family_head_signature_img_response.url}`
+        : ""
     );
 
-    let response = {
-      0: { status: 200, message: "Household inserted successfully" },
-      1: { status: 400, message: "Invalid user ID." },
-      2: { status: 400, message: "Invalid state ID." },
-      3: { status: 400, message: "Invalid district ID." },
-      4: { status: 400, message: "Invalid sub-division ID." },
-      5: { status: 400, message: "Invalid block ID." },
-      6: { status: 400, message: "Invalid GP ID." },
-      7: { status: 400, message: "Invalid village ID." },
-      8: { status: 400, message: "Duplicate survey ID." },
-      9: { status: 500, message: "Internal server error." },
+    const responseMap = {
+      0: "Household inserted successfully",
+      1: "Invalid user ID.",
+      2: "Invalid state ID.",
+      3: "Invalid district ID.",
+      4: "Invalid sub-division ID.",
+      5: "Invalid block ID.",
+      6: "Invalid GP ID.",
+      7: "Invalid village ID.",
+      8: "Duplicate survey ID.",
+      9: "Internal server error.",
+      10: "Household is already exist with this family head contact.",
     };
 
-    const resData = response[errorCode] || {
-      status: 500,
-      message: "Unknown error occurred.",
-    };
+    if (error_code !== 0 || !household_id) {
+      return res.status(error_code === 9 ? 500 : 400).json({
+        success: false,
+        message: responseMap[error_code] || "Unknown error",
+      });
+    }
 
-    return res.status(resData.status).json({
-      success: resData.status === 200,
-      message: resData.message,
+    return res.status(200).json({
+      success: true,
+      message: "Household inserted successfully",
+      household_id,
     });
   } catch (error) {
-    console.error("insertHousehold error:", error.message);
+    console.error("insertHouseholdOnly error:", error.message);
     return res.status(500).json({
       success: false,
       message: "Server error occurred.",
@@ -620,6 +657,7 @@ export const insertHouseHoldAndFamilyMembersData = async (req, res) => {
       7: "Invalid village ID.",
       8: "Duplicate survey ID.",
       9: "Internal server error.",
+      10: "Household is already exist with this family head contact.",
     };
 
     if (error_code !== 0 || !household_id) {
@@ -1371,4 +1409,39 @@ export const insertTrainingOption = async (req, res) => {
   }
 };
 
+export const getHouseholdBySurveyOrContact = async (req, res) => {
+  try {
+    const { survey_id_or_contact } = req.body;
 
+    if (!survey_id_or_contact) {
+      return res.status(400).json({
+        success: false,
+        message: "Missing required input parameter: survey_id_or_contact",
+        data: null,
+      });
+    }
+
+    const data = await getHouseholdBySurveyOrContactModel(survey_id_or_contact);
+
+    if (data && data.length > 0) {
+      return res.status(200).json({
+        success: true,
+        message: "Household details fetched successfully",
+        data,
+      });
+    } else {
+      return res.status(404).json({
+        success: true,
+        message: "No household found for the given input",
+        data: [],
+      });
+    }
+  } catch (error) {
+    console.error("getHouseholdBySurveyOrContact error:", error.message);
+    return res.status(500).json({
+      success: false,
+      message: "Internal server error",
+      data: null,
+    });
+  }
+};
