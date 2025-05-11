@@ -239,6 +239,7 @@ export const getDistrictsByState = async (req, res) => {
         district_id,
         subdivision_id,
         block_id,
+        gp_id,
         village_id,
         start_date,
         end_date,
@@ -258,6 +259,7 @@ export const getDistrictsByState = async (req, res) => {
         district_id,
         subdivision_id,
         block_id,
+        gp_id,
         village_id,
         start_date,
         end_date
