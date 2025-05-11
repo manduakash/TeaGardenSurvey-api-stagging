@@ -62,18 +62,20 @@ export async function getTotalHouseholdsSurveyedDetailsModel(
   district_id,
   subdivision_id,
   block_id,
+  gp_id,
   village_id,
   start_date,
   end_date
 ) {
   try {
     const [rows] = await pool.query(
-      "CALL sp_getTotalHouseholdsSurveyedDetails(?, ?, ?, ?, ?, ?, ?);",
+      "CALL sp_getTotalHouseholdsSurveyedDetails(?, ?, ?, ?, ?, ?, ?, ?);",
       [
         state_id,
         district_id,
         subdivision_id,
         block_id,
+        gp_id,
         village_id,
         start_date,
         end_date,
