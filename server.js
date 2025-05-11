@@ -23,9 +23,9 @@ const port = process.env.API_PORT || 3003;
 // app.use('/uploads', express.static(path.join(process.cwd(), 'uploads')));
 app.use('/uploads', express.static('/uploads'));
 // for api input in body (json)
-app.use(express.json({ limit: "25mb" }));
+app.use(express.json({ limit: "45mb" }));
 // for api input in form-date
-app.use(express.urlencoded({ limit: "10mb", extended: true }));
+app.use(express.urlencoded({ limit: "20mb", extended: true }));
 
 // for whitelisting
 app.use(
