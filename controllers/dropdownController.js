@@ -3,8 +3,42 @@ import {getDistrictsByStateModel,getSubDivisionsByDistrictModel,getBlocksBySubDi
    getMemberDetailsModel,getAllUserTypesModel,getAllTrainingOptionsModel,
    getSurveyorDashboardCountModel,getHouseholdSurveyCountAnalyticsModel,getHealthDetailsCountAnalyticsModel,
    getSchemeEnrollmentCountAnalyticsModel,getLowBirthWeigthCountAnalyticsModel,
-   getWelfareProgramCountAnalyticsModel,gethouseHoldCountAnalyticsModel,getTotalWelfareDetailsModel,getTotalLivelihoodDetailsModel} from "../models/dropdownModel.js";
+   getWelfareProgramCountAnalyticsModel,gethouseHoldCountAnalyticsModel,getTotalWelfareDetailsModel,getTotalLivelihoodDetailsModel,
+   getStatesModel} from "../models/dropdownModel.js";
 import logger from "../utils/logger.js";
+
+export const getStates = async (req, res) => {
+  try {
+    // No input parameter needed for states
+
+    const states = await getStatesModel();
+
+    logger.debug(
+      JSON.stringify({
+        API: "getStates",
+        REQUEST: {},
+        RESPONSE: {
+          success: true,
+          message: "States fetched successfully",
+          data: states,
+        },
+      })
+    );
+
+    return res.status(200).json({
+      success: true,
+      message: "States fetched successfully",
+      data: states,
+    });
+  } catch (error) {
+    logger.error(error.message);
+    return res.status(500).json({
+      success: false,
+      message: "An error occurred, please try again",
+      data: null,
+    });
+  }
+};
 
 export const getDistrictsByState = async (req, res) => {
     try {

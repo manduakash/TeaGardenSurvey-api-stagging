@@ -1,5 +1,21 @@
 import pool from "../db.js";
 
+export async function getStatesModel() {
+  try {
+    // Call the stored procedure without parameters
+    const [rows] = await pool.query("CALL sp_getStates();");
+    
+    console.log("SP Result:", rows);
+
+    // Stored procedures with CALL return nested arrays: rows[0] contains the actual result set
+    return rows?.[0] || [];
+  } catch (e) {
+    console.error("Error fetching states:", e.message);
+    return [];
+  }
+}
+
+
 export async function getDistrictsByStateModel(state_id) {
   try {
     const [rows] = await pool.query("CALL sp_getDistrictsByState(?);",[state_id]);

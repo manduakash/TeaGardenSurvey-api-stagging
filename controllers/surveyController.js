@@ -297,16 +297,10 @@ export const insertLivelihood = async (req, res) => {
       wants_to_join_shg,
       training_required,
       training_option,
+      is_migrant_laborer,  // new field
+      migration_state      // new field (state_id)
     } = req.body;
-
-    console.log({
-      household_id,
-      shg_member,
-      wants_to_join_shg,
-      training_required,
-      training_option,
-    });
-
+    
     // Validate required fields
     if (household_id === undefined) {
       logger.debug(
@@ -318,6 +312,8 @@ export const insertLivelihood = async (req, res) => {
             wants_to_join_shg,
             training_required,
             training_option,
+            is_migrant_laborer,
+            migration_state,
           },
           RESPONSE: {
             success: false,
@@ -333,13 +329,15 @@ export const insertLivelihood = async (req, res) => {
       });
     }
 
-    // Call model
+    // Call model with new parameters
     const result = await insertLivelihoodModel(
       household_id,
       shg_member,
       wants_to_join_shg,
       training_required,
-      training_option
+      training_option,
+      is_migrant_laborer,
+      migration_state
     );
 
     console.log("result", result);
@@ -354,6 +352,8 @@ export const insertLivelihood = async (req, res) => {
             wants_to_join_shg,
             training_required,
             training_option,
+            is_migrant_laborer,
+            migration_state,
           },
           RESPONSE: {
             success: true,
@@ -386,6 +386,8 @@ export const insertLivelihood = async (req, res) => {
             wants_to_join_shg,
             training_required,
             training_option,
+            is_migrant_laborer,
+            migration_state,
           },
           RESPONSE: {
             success: false,
@@ -408,6 +410,7 @@ export const insertLivelihood = async (req, res) => {
     });
   }
 };
+
 
 export const insertWelfare = async (req, res) => {
   try {
@@ -553,11 +556,7 @@ export const insertHouseHoldAndFamilyMembersData = async (req, res) => {
     family_head_signature_img = null,
   } = req.body;
 
-  if (
-    !user_id ||
-    !Array.isArray(family_members) ||
-    family_members.length === 0
-  ) {
+  if (!user_id || !Array.isArray(family_members) || family_members.length === 0) {
     return res.status(400).json({
       success: false,
       message: "Missing required input fields or family member data.",
@@ -565,14 +564,11 @@ export const insertHouseHoldAndFamilyMembersData = async (req, res) => {
   }
 
   try {
-    // document/image uploading..
+    // Upload images
     const family_head_img_response = await base64ToFileServer(
       family_head_img,
       "family_head_img" +
-        `_${district}_${sub_division}_${block}_${gp}_${village}_${house_number.replace(
-          "/",
-          "-"
-        )}`
+        `_${district}_${sub_division}_${block}_${gp}_${village}_${house_number.replace("/", "-")}`
     );
     if (!family_head_img_response?.success) {
       return res.status(400).json({
@@ -586,10 +582,7 @@ export const insertHouseHoldAndFamilyMembersData = async (req, res) => {
     const household_img_response = await base64ToFileServer(
       household_img,
       "household_img" +
-        `_${district}_${sub_division}_${block}_${gp}_${village}_${house_number.replace(
-          "/",
-          "-"
-        )}`
+        `_${district}_${sub_division}_${block}_${gp}_${village}_${house_number.replace("/", "-")}`
     );
     if (!household_img_response?.success) {
       return res.status(400).json({
@@ -603,10 +596,7 @@ export const insertHouseHoldAndFamilyMembersData = async (req, res) => {
     const family_head_signature_img_response = await base64ToFileServer(
       family_head_signature_img,
       "family_head_signature_img" +
-        `_${district}_${sub_division}_${block}_${gp}_${village}_${house_number.replace(
-          "/",
-          "-"
-        )}`
+        `_${district}_${sub_division}_${block}_${gp}_${village}_${house_number.replace("/", "-")}`
     );
     if (!family_head_signature_img_response?.success) {
       return res.status(400).json({
@@ -617,7 +607,7 @@ export const insertHouseHoldAndFamilyMembersData = async (req, res) => {
       });
     }
 
-    // First insert household
+    // Insert household first
     const { error_code, household_id } = await insertHouseholdModelV1(
       state,
       district,
@@ -640,9 +630,7 @@ export const insertHouseHoldAndFamilyMembersData = async (req, res) => {
         ? `${req.protocol}://${req.get("host")}${household_img_response.url}`
         : "",
       family_head_signature_img_response?.url
-        ? `${req.protocol}://${req.get("host")}${
-            family_head_signature_img_response.url
-          }`
+        ? `${req.protocol}://${req.get("host")}${family_head_signature_img_response.url}`
         : ""
     );
 
@@ -667,7 +655,7 @@ export const insertHouseHoldAndFamilyMembersData = async (req, res) => {
       });
     }
 
-    // Now insert family members
+    // Insert family members
     const resultMessages = [];
 
     for (const member of family_members) {
@@ -695,6 +683,8 @@ export const insertHouseHoldAndFamilyMembersData = async (req, res) => {
         lakshmir_bhandar_card_no,
         swasthya_sathi_card_no,
         old_age_pension_id_no,
+        is_migrant_laborer,   // NEW field
+        migration_state       // NEW field
       } = member;
 
       const memberResult = {
@@ -732,12 +722,15 @@ export const insertHouseHoldAndFamilyMembersData = async (req, res) => {
       }
 
       try {
+        // Pass the new parameters to insertLivelihoodModel
         const livelihoodResult = await insertLivelihoodModel(
           household_id,
           shg_member,
           wants_to_join_shg,
           training_required,
-          training_option
+          training_option,
+          is_migrant_laborer,
+          migration_state
         );
 
         if (livelihoodResult !== 0) {
@@ -800,6 +793,7 @@ export const insertHouseHoldAndFamilyMembersData = async (req, res) => {
     });
   }
 };
+
 
 export const offlineSyncSurveyData = async (req, res) => {
   const {
