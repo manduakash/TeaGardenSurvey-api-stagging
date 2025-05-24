@@ -31,7 +31,7 @@ export const uploadBase64Image = async (req, res) => {
 
     fs.writeFileSync(uploadPath, imageBuffer);
 
-    const publicURL = `${req.protocol}://${req.get('host')}/uploads/${name}`;
+    const publicURL = `https://wbassetmgmtservice.link/uploads/${name}`;
 
     res.status(200).json({
       success: true,

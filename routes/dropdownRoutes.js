@@ -2,15 +2,19 @@ import express from "express";
 import { getDistrictsByState ,getSubDivisionsByDistrict,getBlocksBySubDivision,getGPsByBlock,getTotalHouseholdsSurveyedDetails,
     getHealthDetailsWithFilters,getMemberDetails,getAllUserTypes,getAllTrainingOptions,getSurveyorDashboardCount,
     getHouseholdSurveyCountAnalytics,getHealthDetailsCountAnalytics,getSchemeEnrollmentCountAnalytics,
-    getLowBirthWeigthCountAnalytics,getWelfareProgramCountAnalytics,gethouseHoldCountAnalytics,getTotalWelfareDetails,getTotalLivelihoodDetails } from '../controllers/dropdownController.js';
+    getLowBirthWeigthCountAnalytics,getWelfareProgramCountAnalytics,gethouseHoldCountAnalytics,getTotalWelfareDetails,getTotalLivelihoodDetails, 
+    getStates,
+    getTeagardensByGP} from '../controllers/dropdownController.js';
 const router = express.Router();
 
 
-router.post('/getDistrictsByState', getDistrictsByState);
 
+router.post('/getStates', getStates);
+router.post('/getDistrictsByState', getDistrictsByState);
 router.post('/getSubDivisionsByDistrict', getSubDivisionsByDistrict);
 router.post('/getBlocksBySubDivision', getBlocksBySubDivision);
 router.post('/getGPsByBlock', getGPsByBlock);
+router.post('/getTeagardensByGP', getTeagardensByGP);
 router.post('/getTotalHouseholdsSurveyedDetails', getTotalHouseholdsSurveyedDetails);
 router.post('/getHealthDetailsWithFilters', getHealthDetailsWithFilters);
 router.post('/getMemberDetails', getMemberDetails);

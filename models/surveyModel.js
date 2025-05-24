@@ -104,17 +104,21 @@ export async function insertLivelihoodModel(
   shg_member,
   wants_to_join_shg,
   training_required,
-  training_option
+  training_option,
+  is_migrant_laborer,   // new parameter: 0 or 1 (or null)
+  migration_state       // new parameter: state_id (int) or null
 ) {
   try {
     const [rows] = await pool.query(
-      "CALL  sp_insertLivelihood(?, ?, ?, ?, ?, @p_error_code);",
+      "CALL sp_insertLivelihood(?, ?, ?, ?, ?, ?, ?, @p_error_code);",
       [
         household_id,
         shg_member,
         wants_to_join_shg,
         training_required,
         training_option,
+        is_migrant_laborer,
+        migration_state,
       ]
     );
 
@@ -128,6 +132,7 @@ export async function insertLivelihoodModel(
     return 1;
   }
 }
+
 
 export async function insertWelfareModel(
   household_id,
@@ -175,7 +180,7 @@ export async function insertHouseholdModelV1(
   sub_division,
   block,
   gp,
-  village,
+  teagarden,
   house_number,
   latitude,
   longitude,
@@ -195,7 +200,7 @@ export async function insertHouseholdModelV1(
       sub_division,
       block,
       gp,
-      village,
+      teagarden,
       house_number,
       latitude,
       longitude,
