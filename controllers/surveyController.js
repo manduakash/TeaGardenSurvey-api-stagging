@@ -17,7 +17,7 @@ export const insertHousehold = async (req, res) => {
     sub_division,
     block,
     gp,
-    village,
+    teagarden,
     house_number,
     latitude,
     longitude,
@@ -45,7 +45,7 @@ export const insertHousehold = async (req, res) => {
   try {
     const family_head_img_response = await base64ToFileServer(
       family_head_img,
-      `family_head_img_${district}_${sub_division}_${block}_${gp}_${village}_${house_number.replace("/", "-")}`
+      `family_head_img_${district}_${sub_division}_${block}_${gp}_${teagarden}_${house_number.replace("/", "-")}`
     );
     if (!family_head_img_response?.success) {
       return res.status(400).json({
@@ -56,7 +56,7 @@ export const insertHousehold = async (req, res) => {
 
     const household_img_response = await base64ToFileServer(
       household_img,
-      `household_img_${district}_${sub_division}_${block}_${gp}_${village}_${house_number.replace("/", "-")}`
+      `household_img_${district}_${sub_division}_${block}_${gp}_${teagarden}_${house_number.replace("/", "-")}`
     );
     if (!household_img_response?.success) {
       return res.status(400).json({
@@ -67,7 +67,7 @@ export const insertHousehold = async (req, res) => {
 
     const family_head_signature_img_response = await base64ToFileServer(
       family_head_signature_img,
-      `family_head_signature_img_${district}_${sub_division}_${block}_${gp}_${village}_${house_number.replace("/", "-")}`
+      `family_head_signature_img_${district}_${sub_division}_${block}_${gp}_${teagarden}_${house_number.replace("/", "-")}`
     );
     if (!family_head_signature_img_response?.success) {
       return res.status(400).json({
@@ -82,7 +82,7 @@ export const insertHousehold = async (req, res) => {
       sub_division,
       block,
       gp,
-      village,
+      teagarden,
       house_number,
       latitude,
       longitude,
@@ -110,7 +110,7 @@ export const insertHousehold = async (req, res) => {
       4: "Invalid sub-division ID.",
       5: "Invalid block ID.",
       6: "Invalid GP ID.",
-      7: "Invalid village ID.",
+      7: "Invalid teagarden ID.",
       8: "Duplicate survey ID.",
       9: "Internal server error.",
       10: "Household is already exist with this family head contact.",
@@ -541,7 +541,7 @@ export const insertHouseHoldAndFamilyMembersData = async (req, res) => {
     sub_division,
     block,
     gp,
-    village,
+    teagarden,
     house_number,
     latitude,
     longitude,
@@ -568,7 +568,7 @@ export const insertHouseHoldAndFamilyMembersData = async (req, res) => {
     const family_head_img_response = await base64ToFileServer(
       family_head_img,
       "family_head_img" +
-        `_${district}_${sub_division}_${block}_${gp}_${village}_${house_number.replace("/", "-")}`
+        `_${district}_${sub_division}_${block}_${gp}_${teagarden}_${house_number.replace("/", "-")}`
     );
     if (!family_head_img_response?.success) {
       return res.status(400).json({
@@ -582,7 +582,7 @@ export const insertHouseHoldAndFamilyMembersData = async (req, res) => {
     const household_img_response = await base64ToFileServer(
       household_img,
       "household_img" +
-        `_${district}_${sub_division}_${block}_${gp}_${village}_${house_number.replace("/", "-")}`
+        `_${district}_${sub_division}_${block}_${gp}_${teagarden}_${house_number.replace("/", "-")}`
     );
     if (!household_img_response?.success) {
       return res.status(400).json({
@@ -596,7 +596,7 @@ export const insertHouseHoldAndFamilyMembersData = async (req, res) => {
     const family_head_signature_img_response = await base64ToFileServer(
       family_head_signature_img,
       "family_head_signature_img" +
-        `_${district}_${sub_division}_${block}_${gp}_${village}_${house_number.replace("/", "-")}`
+        `_${district}_${sub_division}_${block}_${gp}_${teagarden}_${house_number.replace("/", "-")}`
     );
     if (!family_head_signature_img_response?.success) {
       return res.status(400).json({
@@ -614,7 +614,7 @@ export const insertHouseHoldAndFamilyMembersData = async (req, res) => {
       sub_division,
       block,
       gp,
-      village,
+      teagarden,
       house_number,
       latitude,
       longitude,
@@ -642,7 +642,7 @@ export const insertHouseHoldAndFamilyMembersData = async (req, res) => {
       4: "Invalid sub-division ID.",
       5: "Invalid block ID.",
       6: "Invalid GP ID.",
-      7: "Invalid village ID.",
+      7: "Invalid teagarden ID.",
       8: "Duplicate survey ID.",
       9: "Internal server error.",
       10: "Household is already exist with this family head contact.",

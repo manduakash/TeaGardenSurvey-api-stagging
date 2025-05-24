@@ -4,7 +4,8 @@ import {getDistrictsByStateModel,getSubDivisionsByDistrictModel,getBlocksBySubDi
    getSurveyorDashboardCountModel,getHouseholdSurveyCountAnalyticsModel,getHealthDetailsCountAnalyticsModel,
    getSchemeEnrollmentCountAnalyticsModel,getLowBirthWeigthCountAnalyticsModel,
    getWelfareProgramCountAnalyticsModel,gethouseHoldCountAnalyticsModel,getTotalWelfareDetailsModel,getTotalLivelihoodDetailsModel,
-   getStatesModel} from "../models/dropdownModel.js";
+   getStatesModel,
+   getTeagardensByGPModel} from "../models/dropdownModel.js";
 import logger from "../utils/logger.js";
 
 export const getStates = async (req, res) => {
@@ -253,6 +254,63 @@ export const getDistrictsByState = async (req, res) => {
       return res.status(200).json({
         success: true,
         message: "GPs fetched successfully",
+        data: gps,
+      });
+    } catch (error) {
+      logger.error(error.message);
+      return res.status(500).json({
+        success: false,
+        message: "An error occurred, please try again",
+        data: null,
+      });
+    }
+  };
+  
+
+  export const getTeagardensByGP = async (req, res) => {
+    try {
+      const { gp_id } = req.body;
+  
+      console.log({ gp_id });
+  
+      if (!gp_id) {
+        logger.debug(
+          JSON.stringify({
+            API: "getGPsByBlock",
+            REQUEST: { gp_id },
+            RESPONSE: {
+              success: false,
+              message: "Invalid Input Parameter: blk_id is required",
+            },
+          })
+        );
+  
+        return res.status(400).json({
+          success: false,
+          message: "Invalid Input Parameter: blk_id is required",
+          data: null,
+        });
+      }
+  
+      const gps = await getTeagardensByGPModel(gp_id);
+  
+      if (!gps.length) {
+        logger.debug(
+          JSON.stringify({
+            API: "getGPsByBlock",
+            REQUEST: { gp_id },
+            RESPONSE: {
+              success: true,
+              message: "No GPs found",
+              data: [],
+            },
+          })
+        );
+      }
+  
+      return res.status(200).json({
+        success: true,
+        message: "Teagardens fetched successfully",
         data: gps,
       });
     } catch (error) {

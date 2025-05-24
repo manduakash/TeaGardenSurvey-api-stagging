@@ -72,6 +72,19 @@ export async function getGPsByBlockModel(blk_id) {
   }
 }
 
+export async function getTeagardensByGPModel(gp_id) {
+  try {
+    const [rows] = await pool.query("CALL sp_getTeagardensByGP(?);", [gp_id]);
+
+    console.log("SP Result:", rows);
+
+    return rows?.[0] || [];
+  } catch (e) {
+    console.error("Error fetching GPs:", e.message);
+    return [];
+  }
+}
+
 
 export async function getTotalHouseholdsSurveyedDetailsModel(
   state_id,
