@@ -336,6 +336,39 @@ export const getSchemeEnrollmentCountAnalyticsModel = async (
 };
 
 
+export const getMigratedLaborAndNonMigratedLaborCountsModel = async (
+  state_id,
+  district_id,
+  subdivision_id,
+  block_id,
+  village_id,
+  start_date,
+  end_date
+) => {
+  try {
+    const [rows] = await pool.query(
+      "CALL sp_getMigratedLaborAndNonMigratedLaborCounts(?, ?, ?, ?, ?, ?, ?)",
+      [
+        state_id,
+        district_id,
+        subdivision_id,
+        block_id,
+        village_id,
+        start_date,
+        end_date
+      ]
+    );
+    
+
+    
+
+    return rows[0]; // First result set from SP
+  } catch (error) {
+    logger.error("sp_getMigratedLaborAndNonMigratedLaborCounts error:", error.message);
+    return [];
+  }
+};
+
 export const getLowBirthWeigthCountAnalyticsModel = async (
   state_id,
   district_id,
