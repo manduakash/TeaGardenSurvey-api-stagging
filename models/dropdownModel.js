@@ -461,18 +461,20 @@ export const getTotalWelfareDetailsModel = async (
   district_id,
   subdivision_id,
   block_id,
+  gp_id,
   village_id,
   start_date,
   end_date
 ) => {
   try {
     const [rows] = await pool.query(
-      "CALL sp_getTotalWelfareDetails(?, ?, ?, ?, ?, ?, ?)",
+      "CALL sp_getTotalWelfareDetails(?, ?, ?, ?, ?, ?, ?, ?)",
       [
         state_id,
         district_id,
         subdivision_id,
         block_id,
+        gp_id,
         village_id,
         start_date,
         end_date,
@@ -491,18 +493,20 @@ export const getTotalLivelihoodDetailsModel = async (
   district_id,
   subdivision_id,
   block_id,
+  gp_id,
   village_id,
   start_date,
   end_date
 ) => {
   try {
     const [rows] = await pool.query(
-      "CALL sp_getTotalLivelihoodDetails(?, ?, ?, ?, ?, ?, ?)",
+      "CALL sp_getTotalLivelihoodDetails(?, ?, ?, ?, ?, ?, ?, ?)",
       [
         state_id,
         district_id,
         subdivision_id,
         block_id,
+        gp_id,
         village_id,
         start_date,
         end_date,
