@@ -4,7 +4,8 @@ import { getDistrictsByState ,getSubDivisionsByDistrict,getBlocksBySubDivision,g
     getHouseholdSurveyCountAnalytics,getHealthDetailsCountAnalytics,getSchemeEnrollmentCountAnalytics,
     getLowBirthWeigthCountAnalytics,getWelfareProgramCountAnalytics,gethouseHoldCountAnalytics,getTotalWelfareDetails,getTotalLivelihoodDetails, 
     getStates,
-    getTeagardensByGP} from '../controllers/dropdownController.js';
+    getTeagardensByGP,
+    getMigratedLaborAndNonMigratedLaborCounts} from '../controllers/dropdownController.js';
 const router = express.Router();
 
 
@@ -25,6 +26,7 @@ router.post('/getHouseholdSurveyCountAnalytics', getHouseholdSurveyCountAnalytic
 router.post('/getHealthDetailsCountAnalytics', getHealthDetailsCountAnalytics);
 router.post('/getSchemeEnrollmentCountAnalytics', getSchemeEnrollmentCountAnalytics);
 router.post('/getLowBirthWeigthCountAnalytics', getLowBirthWeigthCountAnalytics);
+router.post('/getMigratedLaborAndNonMigratedLaborCounts', getMigratedLaborAndNonMigratedLaborCounts);
 router.post('/getWelfareProgramCountAnalytics', getWelfareProgramCountAnalytics);
 router.post('/gethouseHoldCountAnalytics', gethouseHoldCountAnalytics);
 router.post('/getTotalWelfareDetails', getTotalWelfareDetails);

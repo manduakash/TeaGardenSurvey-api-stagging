@@ -813,6 +813,69 @@ export const getDistrictsByState = async (req, res) => {
       });
     }
   };
+  
+  export const getMigratedLaborAndNonMigratedLaborCounts = async (req, res) => {
+    try {
+      const {
+        state_id,
+        district_id,
+        subdivision_id,
+        block_id,
+        village_id,
+        start_date,
+        end_date,
+      } = req.body;
+  
+      if (!state_id ) {
+        logger.debug("Missing input parameters", {
+          state_id,
+          district_id,
+          subdivision_id,
+          block_id,
+          village_id,
+          start_date,
+          end_date,
+        });
+  
+        return res.status(400).json({
+          success: false,
+          message: "Missing required input parameters",
+          data: null,
+        });
+      }
+  
+      const data = await getMigratedLaborAndNonMigratedLaborCountsModel(
+        state_id,
+        district_id,
+        subdivision_id,
+        block_id,
+        village_id,
+        start_date,
+        end_date
+      );
+  
+      if (data && data.length > 0) {
+        return res.status(200).json({
+          success: true,
+          message: "Analytics details count fetched successfully",
+          data,
+        });
+      } else {
+        return res.status(404).json({
+          success: true,
+          message: "No data found for the given filters",
+          data: [],
+        });
+      }
+    } catch (error) {
+      logger.error("getMigratedLaborAndNonMigratedLaborCounts error:", error.message);
+      return res.status(500).json({
+        success: false,
+        message: "Server error occurred",
+        data: null,
+      });
+    }
+  };
 
 
   export const getWelfareProgramCountAnalytics = async (req, res) => {
