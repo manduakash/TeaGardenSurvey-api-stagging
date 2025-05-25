@@ -240,19 +240,21 @@ export async function getHouseholdSurveyCountAnalyticsModel(
   district_id,
   subdivision_id,
   block_id,
-  village_id,
+  gp_id,
+  teagarden_id,
   start_date,
   end_date
 ) {
   try {
     const [rows] = await pool.query(
-      "CALL sp_getHouseholdSurveyCountAnalytics(?, ?, ?, ?, ?, ?, ?)",
+      "CALL sp_getHouseholdSurveyCountAnalytics(?, ?, ?, ?, ?, ?, ?, ?)",
       [
         state_id,
         district_id,
         subdivision_id,
         block_id,
-        village_id,
+        gp_id,
+        teagarden_id,
         start_date,
         end_date
       ]
@@ -273,19 +275,21 @@ export const getHealthDetailsCountAnalyticsModel = async (
   district_id,
   subdivision_id,
   block_id,
-  village_id,
+  gp_id,
+  teagarden_id,
   start_date,
   end_date
 ) => {
   try {
     const [rows] = await pool.query(
-      "CALL sp_getHealthDetailsCountAnalytics(?, ?, ?, ?, ?, ?, ?)",
+      "CALL sp_getHealthDetailsCountAnalytics(?, ?, ?, ?, ?, ?, ?, ?)",
       [
         state_id,
         district_id,
         subdivision_id,
         block_id,
-        village_id,
+        gp_id,
+        teagarden_id,
         start_date,
         end_date
       ]
@@ -307,19 +311,21 @@ export const getSchemeEnrollmentCountAnalyticsModel = async (
   district_id,
   subdivision_id,
   block_id,
-  village_id,
+  gp_id,
+  teagarden_id,
   start_date,
   end_date
 ) => {
   try {
     const [rows] = await pool.query(
-      "CALL sp_getSchemeEnrollmentCountAnalytics(?, ?, ?, ?, ?, ?, ?)",
+      "CALL sp_getSchemeEnrollmentCountAnalytics(?, ?, ?, ?, ?, ?, ?, ?)",
       [
         state_id,
         district_id,
         subdivision_id,
         block_id,
-        village_id,
+        gp_id,
+        teagarden_id,
         start_date,
         end_date
       ]
@@ -374,19 +380,21 @@ export const getLowBirthWeigthCountAnalyticsModel = async (
   district_id,
   subdivision_id,
   block_id,
-  village_id,
+  gp_id,
+  teagarden_id,
   start_date,
   end_date
 ) => {
   try {
     const [rows] = await pool.query(
-      "CALL sp_getLowBirthWeigthCountAnalytics(?, ?, ?, ?, ?, ?, ?)",
+      "CALL sp_getLowBirthWeigthCountAnalytics(?, ?, ?, ?, ?, ?, ?, ?)",
       [
         state_id,
         district_id,
         subdivision_id,
         block_id,
-        village_id,
+        gp_id,
+        teagarden_id,
         start_date,
         end_date
       ]
@@ -408,19 +416,21 @@ export const getWelfareProgramCountAnalyticsModel = async (
   district_id,
   subdivision_id,
   block_id,
-  village_id,
+  gp_id,
+  teagarden_id,
   start_date,
   end_date
 ) => {
   try {
     const [rows] = await pool.query(
-      "CALL sp_getWelfareProgramCountAnalytics(?, ?, ?, ?, ?, ?, ?)",
+      "CALL sp_getWelfareProgramCountAnalytics(?, ?, ?, ?, ?, ?, ?, ?)",
       [
         state_id,
         district_id,
         subdivision_id,
         block_id,
-        village_id,
+        gp_id,
+        teagarden_id,
         start_date,
         end_date
       ]
@@ -441,19 +451,21 @@ export const gethouseHoldCountAnalyticsModel = async (
   district_id,
   subdivision_id,
   block_id,
-  village_id,
+  gp_id,
+  teagarden_id,
   start_date,
   end_date
 ) => {
   try {
     const [rows] = await pool.query(
-      "CALL sp_gethouseHoldCountAnalytics(?, ?, ?, ?, ?, ?, ?)",
+      "CALL sp_gethouseHoldCountAnalytics(?, ?, ?, ?, ?, ?, ?, ?)",
       [
         state_id,
         district_id,
         subdivision_id,
         block_id,
-        village_id,
+        gp_id,
+        teagarden_id,
         start_date,
         end_date
       ]
