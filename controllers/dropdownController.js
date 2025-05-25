@@ -5,7 +5,8 @@ import {getDistrictsByStateModel,getSubDivisionsByDistrictModel,getBlocksBySubDi
    getSchemeEnrollmentCountAnalyticsModel,getLowBirthWeigthCountAnalyticsModel,
    getWelfareProgramCountAnalyticsModel,gethouseHoldCountAnalyticsModel,getTotalWelfareDetailsModel,getTotalLivelihoodDetailsModel,
    getStatesModel,
-   getTeagardensByGPModel} from "../models/dropdownModel.js";
+   getTeagardensByGPModel,
+   getMigratedLaborAndNonMigratedLaborCountsModel} from "../models/dropdownModel.js";
 import logger from "../utils/logger.js";
 
 export const getStates = async (req, res) => {
