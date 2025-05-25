@@ -813,7 +813,9 @@ export const getLowBirthWeigthCountAnalytics = async (req, res) => {
       });
     }
   } catch (error) {
-    logger.error("getHealthDetailsCountAnalytics error:", error.message);
+    console.log("error", error);
+    
+    logger.error("getHealthDetailsCountAnalytics error:", error);
     return res.status(500).json({
       success: false,
       message: "Server error occurred",
