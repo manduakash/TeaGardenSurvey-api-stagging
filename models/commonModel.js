@@ -7,7 +7,7 @@ export async function getDashboardCountsModel(
     subDiv,
     blk,
     gp,
-    village
+    tg
   ) {
     try {
       // Call the stored procedure with parameters
@@ -18,7 +18,7 @@ export async function getDashboardCountsModel(
           subDiv,
           blk,
           gp,
-          village
+          tg
         ]
       );
       console.log("rows", rows);

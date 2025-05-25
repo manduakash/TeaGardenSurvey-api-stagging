@@ -7,7 +7,7 @@ export const getDashboardCounts = async (req, res) => {
         sub_div,
         blk,
         gp,
-        village
+        tg
       } = req.query; // Extract input from query parameters
   
       // Convert parameters to integers or set to 0 if not provided
@@ -15,7 +15,7 @@ export const getDashboardCounts = async (req, res) => {
       const subDivId = sub_div ? parseInt(sub_div) : 0;
       const blkId = blk ? parseInt(blk) : 0;
       const gpId = gp ? parseInt(gp) : 0;
-      const villageId = village ? parseInt(village) : 0;
+      const teagardenId = tg ? parseInt(tg) : 0;
   
       // Debug logging for request
       logger.debug(
@@ -25,7 +25,7 @@ export const getDashboardCounts = async (req, res) => {
             sub_div: subDivId,
             blk: blkId,
             gp: gpId,
-            village: villageId
+            village: teagardenId
           }
         })
       );
@@ -36,7 +36,7 @@ export const getDashboardCounts = async (req, res) => {
         subDivId,
         blkId,
         gpId,
-        villageId
+        teagardenId
       );
       console.log("result", result);
   
@@ -49,7 +49,7 @@ export const getDashboardCounts = async (req, res) => {
               sub_div: subDivId,
               blk: blkId,
               gp: gpId,
-              village: villageId
+              village: teagardenId
             },
             RESPONSE: {
               success: true,
@@ -73,7 +73,7 @@ export const getDashboardCounts = async (req, res) => {
               sub_div: subDivId,
               blk: blkId,
               gp: gpId,
-              village: villageId
+              village: teagardenId
             },
             RESPONSE: {
               success: false,
