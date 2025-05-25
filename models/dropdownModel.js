@@ -4,7 +4,7 @@ export async function getStatesModel() {
   try {
     // Call the stored procedure without parameters
     const [rows] = await pool.query("CALL sp_getStates();");
-    
+
     console.log("SP Result:", rows);
 
     // Stored procedures with CALL return nested arrays: rows[0] contains the actual result set
@@ -15,11 +15,12 @@ export async function getStatesModel() {
   }
 }
 
-
 export async function getDistrictsByStateModel(state_id) {
   try {
-    const [rows] = await pool.query("CALL sp_getDistrictsByState(?);",[state_id]);
-    
+    const [rows] = await pool.query("CALL sp_getDistrictsByState(?);", [
+      state_id,
+    ]);
+
     console.log("SP Result:", rows);
 
     // If it's a nested result (typical with CALL), return first result set
@@ -30,11 +31,12 @@ export async function getDistrictsByStateModel(state_id) {
   }
 }
 
-
 export async function getSubDivisionsByDistrictModel(dist_id) {
   try {
-    const [rows] = await pool.query("CALL sp_getSubDivisionsByDistrict(?);", [dist_id]);
-    
+    const [rows] = await pool.query("CALL sp_getSubDivisionsByDistrict(?);", [
+      dist_id,
+    ]);
+
     console.log("SP Result:", rows);
 
     return rows?.[0] || [];
@@ -44,10 +46,11 @@ export async function getSubDivisionsByDistrictModel(dist_id) {
   }
 }
 
-
 export async function getBlocksBySubDivisionModel(sub_div_id) {
   try {
-    const [rows] = await pool.query("CALL sp_getBlocksBySubDivision(?);", [sub_div_id]);
+    const [rows] = await pool.query("CALL sp_getBlocksBySubDivision(?);", [
+      sub_div_id,
+    ]);
 
     console.log("SP Result:", rows);
 
@@ -57,7 +60,6 @@ export async function getBlocksBySubDivisionModel(sub_div_id) {
     return [];
   }
 }
-
 
 export async function getGPsByBlockModel(blk_id) {
   try {
@@ -85,7 +87,6 @@ export async function getTeagardensByGPModel(gp_id) {
   }
 }
 
-
 export async function getTotalHouseholdsSurveyedDetailsModel(
   state_id,
   district_id,
@@ -110,19 +111,22 @@ export async function getTotalHouseholdsSurveyedDetailsModel(
         end_date,
       ]
     );
-    
+
     return rows[1];
   } catch (error) {
-    console.error("getTotalHouseholdsSurveyedDetailsModel error:", error.message);
+    console.error(
+      "getTotalHouseholdsSurveyedDetailsModel error:",
+      error.message
+    );
     throw error;
   }
 }
-
 
 export async function getHealthDetailsWithFiltersModel(
   state_id,
   district_id,
   subdivision_id,
+  gp_id,
   block_id,
   village_id,
   start_date,
@@ -136,12 +140,13 @@ export async function getHealthDetailsWithFiltersModel(
 ) {
   try {
     const [rows] = await pool.query(
-      "CALL sp_getHealthDetailsWithFiltersAndAgeGroup(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);",
+      "CALL sp_getHealthDetailsWithFiltersAndAgeGroup(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);",
       [
         state_id,
         district_id,
         subdivision_id,
         block_id,
+        gp_id,
         village_id,
         start_date,
         end_date,
@@ -153,14 +158,13 @@ export async function getHealthDetailsWithFiltersModel(
         age_group,
       ]
     );
-console.log("rows[0]",rows)
-    return rows[0]  // First result set
+    console.log("rows[0]", rows);
+    return rows[0]; // First result set
   } catch (error) {
     console.error("getHealthDetailsWithFiltersModel error:", error.message);
     throw error;
   }
 }
-
 
 export const getMemberDetailsModel = async (
   state_id,
@@ -181,7 +185,7 @@ export const getMemberDetailsModel = async (
         block_id,
         village_id,
         start_date,
-        end_date
+        end_date,
       ]
     );
 
@@ -202,8 +206,6 @@ export const getAllUserTypesModel = async () => {
   }
 };
 
-
-
 export const getAllTrainingOptionsModel = async () => {
   try {
     const [rows] = await pool.query("CALL sp_getAllTrainingOptions()");
@@ -214,18 +216,11 @@ export const getAllTrainingOptionsModel = async () => {
   }
 };
 
-export const getSurveyorDashboardCountModel = async (
-  surveyor_user_id
- 
-) => {
+export const getSurveyorDashboardCountModel = async (surveyor_user_id) => {
   try {
-    const [rows] = await pool.query(
-      "CALL sp_getSurveyorDashboardCount(?)",
-      [
-        surveyor_user_id
-       
-      ]
-    );
+    const [rows] = await pool.query("CALL sp_getSurveyorDashboardCount(?)", [
+      surveyor_user_id,
+    ]);
 
     return rows[0]; // MySQL procedures return nested result sets
   } catch (error) {
@@ -233,7 +228,6 @@ export const getSurveyorDashboardCountModel = async (
     return [];
   }
 };
-
 
 export async function getHouseholdSurveyCountAnalyticsModel(
   state_id,
@@ -256,11 +250,9 @@ export async function getHouseholdSurveyCountAnalyticsModel(
         gp_id,
         teagarden_id,
         start_date,
-        end_date
+        end_date,
       ]
     );
-
-    
 
     return rows[0]; // First set of rows is the actual result
   } catch (error) {
@@ -268,7 +260,6 @@ export async function getHouseholdSurveyCountAnalyticsModel(
     throw error;
   }
 }
-
 
 export const getHealthDetailsCountAnalyticsModel = async (
   state_id,
@@ -291,12 +282,9 @@ export const getHealthDetailsCountAnalyticsModel = async (
         gp_id,
         teagarden_id,
         start_date,
-        end_date
+        end_date,
       ]
     );
-    
-
-    
 
     return rows[0]; // First result set from SP
   } catch (error) {
@@ -304,7 +292,6 @@ export const getHealthDetailsCountAnalyticsModel = async (
     return [];
   }
 };
-
 
 export const getSchemeEnrollmentCountAnalyticsModel = async (
   state_id,
@@ -327,12 +314,9 @@ export const getSchemeEnrollmentCountAnalyticsModel = async (
         gp_id,
         teagarden_id,
         start_date,
-        end_date
+        end_date,
       ]
     );
-    
-
-    
 
     return rows[0]; // First result set from SP
   } catch (error) {
@@ -341,36 +325,37 @@ export const getSchemeEnrollmentCountAnalyticsModel = async (
   }
 };
 
-
 export const getMigratedLaborAndNonMigratedLaborCountsModel = async (
   state_id,
   district_id,
   subdivision_id,
   block_id,
-  village_id,
+  gp_id,
+  teagarden_id,
   start_date,
   end_date
 ) => {
   try {
     const [rows] = await pool.query(
-      "CALL sp_getMigratedLaborAndNonMigratedLaborCounts(?, ?, ?, ?, ?, ?, ?)",
+      "CALL sp_getMigratedLaborAndNonMigratedLaborCounts(?, ?, ?, ?, ?, ?, ?, ?)",
       [
         state_id,
         district_id,
         subdivision_id,
         block_id,
-        village_id,
+        gp_id,
+        teagarden_id,
         start_date,
-        end_date
+        end_date,
       ]
     );
-    
-
-    
 
     return rows[0]; // First result set from SP
   } catch (error) {
-    logger.error("sp_getMigratedLaborAndNonMigratedLaborCounts error:", error.message);
+    logger.error(
+      "sp_getMigratedLaborAndNonMigratedLaborCounts error:",
+      error.message
+    );
     return [];
   }
 };
@@ -396,12 +381,9 @@ export const getLowBirthWeigthCountAnalyticsModel = async (
         gp_id,
         teagarden_id,
         start_date,
-        end_date
+        end_date,
       ]
     );
-    
-
-    
 
     return rows[0]; // First result set from SP
   } catch (error) {
@@ -409,7 +391,6 @@ export const getLowBirthWeigthCountAnalyticsModel = async (
     return [];
   }
 };
-
 
 export const getWelfareProgramCountAnalyticsModel = async (
   state_id,
@@ -432,12 +413,9 @@ export const getWelfareProgramCountAnalyticsModel = async (
         gp_id,
         teagarden_id,
         start_date,
-        end_date
+        end_date,
       ]
     );
-    
-
-    
 
     return rows[0]; // First result set from SP
   } catch (error) {
@@ -467,12 +445,9 @@ export const gethouseHoldCountAnalyticsModel = async (
         gp_id,
         teagarden_id,
         start_date,
-        end_date
+        end_date,
       ]
     );
-    
-
-    
 
     return rows[0]; // First result set from SP
   } catch (error) {
@@ -500,12 +475,9 @@ export const getTotalWelfareDetailsModel = async (
         block_id,
         village_id,
         start_date,
-        end_date
+        end_date,
       ]
     );
-    
-
-    
 
     return rows[1]; // First result set from SP
   } catch (error) {
@@ -513,7 +485,6 @@ export const getTotalWelfareDetailsModel = async (
     return [];
   }
 };
-
 
 export const getTotalLivelihoodDetailsModel = async (
   state_id,
@@ -534,12 +505,9 @@ export const getTotalLivelihoodDetailsModel = async (
         block_id,
         village_id,
         start_date,
-        end_date
+        end_date,
       ]
     );
-    
-
-    
 
     return rows[1]; // First result set from SP
   } catch (error) {

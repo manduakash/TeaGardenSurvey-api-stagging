@@ -389,6 +389,7 @@ export const getHealthDetailsWithFilters = async (req, res) => {
       district_id,
       subdivision_id,
       block_id,
+      gp_id,
       village_id,
       start_date,
       end_date,
@@ -405,6 +406,7 @@ export const getHealthDetailsWithFilters = async (req, res) => {
       district_id || 0,
       subdivision_id || 0,
       block_id || 0,
+      gp_id || 0,
       village_id || 0,
       start_date || "",
       end_date || "",
@@ -813,7 +815,9 @@ export const getLowBirthWeigthCountAnalytics = async (req, res) => {
       });
     }
   } catch (error) {
-    logger.error("getHealthDetailsCountAnalytics error:", error.message);
+    console.log("error", error);
+    
+    logger.error("getHealthDetailsCountAnalytics error:", error);
     return res.status(500).json({
       success: false,
       message: "Server error occurred",
