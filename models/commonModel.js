@@ -3,20 +3,22 @@
 import pool from "../db.js";
 
 export async function getDashboardCountsModel(
+    dist,
     subDiv,
     blk,
     gp,
-    village
+    tg
   ) {
     try {
       // Call the stored procedure with parameters
       const [rows] = await pool.query(
-        "CALL sp_getDashboardCounts(?, ?, ?, ?);",
+        "CALL sp_getDashboardCounts(?, ?, ?, ?, ?);",
         [
+          dist,
           subDiv,
           blk,
           gp,
-          village
+          tg
         ]
       );
       console.log("rows", rows);
