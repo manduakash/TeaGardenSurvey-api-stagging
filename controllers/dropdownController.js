@@ -1031,6 +1031,7 @@ export const getTotalWelfareDetails = async (req, res) => {
       district_id,
       subdivision_id,
       block_id,
+      gp_id,
       village_id,
       start_date,
       end_date,
@@ -1059,6 +1060,7 @@ export const getTotalWelfareDetails = async (req, res) => {
       district_id,
       subdivision_id,
       block_id,
+      gp_id,
       village_id,
       start_date,
       end_date
@@ -1094,6 +1096,7 @@ export const getTotalLivelihoodDetails = async (req, res) => {
       district_id,
       subdivision_id,
       block_id,
+      gp_id,
       village_id,
       start_date,
       end_date,
@@ -1122,6 +1125,7 @@ export const getTotalLivelihoodDetails = async (req, res) => {
       district_id,
       subdivision_id,
       block_id,
+      gp_id,
       village_id,
       start_date,
       end_date
