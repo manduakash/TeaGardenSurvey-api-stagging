@@ -126,6 +126,7 @@ export async function getHealthDetailsWithFiltersModel(
   state_id,
   district_id,
   subdivision_id,
+  gp_id,
   block_id,
   village_id,
   start_date,
@@ -139,12 +140,13 @@ export async function getHealthDetailsWithFiltersModel(
 ) {
   try {
     const [rows] = await pool.query(
-      "CALL sp_getHealthDetailsWithFiltersAndAgeGroup(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);",
+      "CALL sp_getHealthDetailsWithFiltersAndAgeGroup(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);",
       [
         state_id,
         district_id,
         subdivision_id,
         block_id,
+        gp_id,
         village_id,
         start_date,
         end_date,
