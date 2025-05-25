@@ -3,6 +3,7 @@ import logger from "../utils/logger.js";
 export const getDashboardCounts = async (req, res) => {
     try {
       const {
+        dist,
         sub_div,
         blk,
         gp,
@@ -10,6 +11,7 @@ export const getDashboardCounts = async (req, res) => {
       } = req.query; // Extract input from query parameters
   
       // Convert parameters to integers or set to 0 if not provided
+      const distId = dist ? parseInt(dist) : 0;
       const subDivId = sub_div ? parseInt(sub_div) : 0;
       const blkId = blk ? parseInt(blk) : 0;
       const gpId = gp ? parseInt(gp) : 0;
@@ -30,6 +32,7 @@ export const getDashboardCounts = async (req, res) => {
   
       // Call model function to get dashboard counts
       const result = await getDashboardCountsModel(
+        distId,
         subDivId,
         blkId,
         gpId,
