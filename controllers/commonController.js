@@ -8,7 +8,7 @@ export const getDashboardCounts = async (req, res) => {
         blk,
         gp,
         tg
-      } = req.query; // Extract input from query parameters
+      } = req.body; // Extract input from query parameters
   
       // Convert parameters to integers or set to 0 if not provided
       const distId = dist ? parseInt(dist) : 0;

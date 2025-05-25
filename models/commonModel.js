@@ -11,6 +11,12 @@ export async function getDashboardCountsModel(
   ) {
     try {
       // Call the stored procedure with parameters
+      console.log({ dist,
+    subDiv,
+    blk,
+    gp,
+    tg});
+      
       const [rows] = await pool.query(
         "CALL sp_getDashboardCounts(?, ?, ?, ?, ?);",
         [
