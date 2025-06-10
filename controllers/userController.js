@@ -1,4 +1,4 @@
-import { createUserModel } from "../models/userModel.js";
+import { createUserModel, getAllUsersModel } from "../models/userModel.js";
 import logger from "../utils/logger.js";
 
 export const createUser = async (req, res) => {
@@ -74,3 +74,23 @@ export const createUser = async (req, res) => {
       });
     }
   };
+
+  export const getAllUsers = async (req, res) => {
+    try {
+      const result = await getAllUsersModel();
+      if (result) {
+        return res.status(200).json({
+          success: true,
+          message: "Users fetched successfully",
+          data: result,
+        });
+      }
+    } catch (error) {
+      logger.error(error.message);
+      return res.status(500).json({
+        success: false,
+        message: "An error occurred, Please try again",
+        data: null,
+      });
+    }
+  }

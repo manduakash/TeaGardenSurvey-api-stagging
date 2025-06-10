@@ -32,11 +32,21 @@ export async function createUserModel(
           CreatedBy
         ]
       );
-      
+
       // Fetch the output parameter `@p_ErrorCode`
       const [[errorResult]] = await pool.query("SELECT @p_ErrorCode as ErrorCode");
   
       return errorResult.ErrorCode; // Return the error code
+    } catch (e) {
+      console.log(e.message);
+      return null;
+    }
+  }
+
+    export async function getAllUsersModel() {
+    try {
+      const [rows] = await pool.query("CALL sp_getAllUsers();");
+      return rows;
     } catch (e) {
       console.log(e.message);
       return null;
