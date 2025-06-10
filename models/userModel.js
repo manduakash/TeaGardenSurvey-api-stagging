@@ -46,7 +46,7 @@ export async function createUserModel(
     export async function getAllUsersModel() {
     try {
       const [rows] = await pool.query("CALL sp_getAllUsers();");
-      return rows;
+      return rows[0];
     } catch (e) {
       console.log(e.message);
       return null;
