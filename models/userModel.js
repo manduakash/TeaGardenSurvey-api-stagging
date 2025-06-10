@@ -5,6 +5,7 @@ export async function createUserModel(
     Username,
     PasswordHash,
     FullName,
+    ContactNo,
     UserTypeID,
     StateID,
     DistrictID,
@@ -16,11 +17,12 @@ export async function createUserModel(
     try {
       // Use a query with the correct number of parameters
       const [rows] = await pool.query(
-        "CALL sp_createUser(?, ?, ?, ?, ?, ?, ?, ?, ?, ?,@p_ErrorCode);",
+        "CALL sp_createUser(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,@p_ErrorCode);",
         [
           Username,
           PasswordHash,
           FullName,
+          ContactNo,
           UserTypeID,
           StateID,
           DistrictID,
@@ -30,7 +32,7 @@ export async function createUserModel(
           CreatedBy
         ]
       );
-  console.log("rows", rows)
+      
       // Fetch the output parameter `@p_ErrorCode`
       const [[errorResult]] = await pool.query("SELECT @p_ErrorCode as ErrorCode");
   
