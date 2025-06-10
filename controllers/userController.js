@@ -7,6 +7,7 @@ export const createUser = async (req, res) => {
         Username ,
         Password,
         FullName,
+        ContactNo,
         UserTypeID ,
         StateID,
         DistrictID,
@@ -16,18 +17,6 @@ export const createUser = async (req, res) => {
         CreatedBy,
       } = req.body; // Extract input from request body
   
-      console.log({
-        Username ,
-        Password,
-        FullName,
-        UserTypeID ,
-        StateID,
-        DistrictID,
-        SubDivisionID ,
-        BlockID,
-        GPID,
-        CreatedBy,
-      })
       // Check if all required inputs are provided
       if (
         !(
@@ -36,31 +25,8 @@ export const createUser = async (req, res) => {
           FullName &&
           UserTypeID &&
           StateID 
-         
         )
       ) {
-        // Debug logging for invalid input
-        logger.debug(
-          JSON.stringify({
-            API: "createUser",
-            REQUEST: {
-              Username,
-              Password,
-              FullName,
-              UserTypeID,
-              StateID,
-              DistrictID,
-              SubDivisionID,
-              BlockID,
-              GPID,
-              CreatedBy,
-            },
-            RESPONSE: {
-              success: false,
-              message: "Invalid Input Parameters",
-            },
-          })
-        );
   
         // Send response for missing input
         return res.status(400).json({
@@ -75,6 +41,7 @@ export const createUser = async (req, res) => {
         Username,
         btoa(Password),
         FullName,
+        ContactNo,
         UserTypeID,
         StateID,
         DistrictID,
@@ -83,59 +50,15 @@ export const createUser = async (req, res) => {
         GPID,
         CreatedBy
       );
-  console.log("result", result);
+
       if (result === 0) {
         // If user creation was successful
-        logger.debug(
-          JSON.stringify({
-            API: "createUser",
-            REQUEST: {
-              Username,
-              Password,
-              FullName,
-              UserTypeID,
-              StateID,
-              DistrictID,
-              SubDivisionID,
-              BlockID,
-              GPID,
-              CreatedBy,
-            },
-            RESPONSE: {
-              success: true,
-              message: "User created successfully",
-            },
-          })
-        );
-  
+     
         return res.status(200).json({
           success: true,
           message: "User created successfully",
         });
       } else {
-        // If user creation failed
-        logger.debug(
-          JSON.stringify({
-            API: "createUser",
-            REQUEST: {
-              Username,
-              Password,
-              FullName,
-              UserTypeID,
-              StateID,
-              DistrictID,
-              SubDivisionID,
-              BlockID,
-              GPID,
-              CreatedBy,
-            },
-            RESPONSE: {
-              success: false,
-              message: "Failed to create user",
-            },
-          })
-        );
-  
         return res.status(400).json({
           success: false,
           message: "Failed to create user",
