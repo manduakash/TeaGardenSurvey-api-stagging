@@ -310,6 +310,7 @@ export const insertLivelihood = async (req, res) => {
       migration_state ,     // new field (state_id)
       is_disabled,
       nature_of_disability,
+      migrant_occupation_id,
     } = req.body;
     
     // Validate required fields
@@ -327,6 +328,7 @@ export const insertLivelihood = async (req, res) => {
             migration_state,
             is_disabled,
             nature_of_disability,
+            migrant_occupation_id,
           },
           RESPONSE: {
             success: false,
@@ -352,7 +354,8 @@ export const insertLivelihood = async (req, res) => {
       is_migrant_laborer,
       migration_state,
       is_disabled,
-      nature_of_disability
+      nature_of_disability,
+      migrant_occupation_id
     );
 
     console.log("result", result);
@@ -371,6 +374,7 @@ export const insertLivelihood = async (req, res) => {
             migration_state,
             is_disabled,
             nature_of_disability,
+            migrant_occupation_id,
           },
           RESPONSE: {
             success: true,
@@ -407,6 +411,7 @@ export const insertLivelihood = async (req, res) => {
             migration_state,
             is_disabled,
             nature_of_disability,
+            migrant_occupation_id,
           },
           RESPONSE: {
             success: false,
@@ -723,6 +728,7 @@ export const insertHouseHoldAndFamilyMembersData = async (req, res) => {
         labour_card_no,
         is_disabled,
         nature_of_disability,
+        migrant_occupation_id,
       } = member;
 
       const memberResult = {
@@ -774,7 +780,8 @@ export const insertHouseHoldAndFamilyMembersData = async (req, res) => {
           is_migrant_laborer,
           migration_state,
           is_disabled,
-          nature_of_disability
+          nature_of_disability,
+          migrant_occupation_id
         );
 
         if (livelihoodResult !== 0) {

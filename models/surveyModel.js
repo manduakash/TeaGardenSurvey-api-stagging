@@ -55,10 +55,11 @@ export async function insertLivelihoodModel(
   migration_state,       // new parameter: state_id (int) or null
   is_disabled,
   nature_of_disability,
+  migrant_occupation_id
 ) {
   try {
     const [rows] = await pool.query(
-      "CALL sp_insertLivelihood(?, ?, ?, ?, ?, ?, ?, ?, ?, @p_error_code);",
+      "CALL sp_insertLivelihood(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, @p_error_code);",
       [
         household_id,
         shg_member,
@@ -69,6 +70,7 @@ export async function insertLivelihoodModel(
         migration_state,
         is_disabled,
         nature_of_disability,
+        migrant_occupation_id
       ]
     );
 
