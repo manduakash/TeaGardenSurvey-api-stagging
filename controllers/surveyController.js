@@ -34,6 +34,7 @@ export const insertHousehold = async (req, res) => {
     family_head_signature_img = null,
     caste,
     caste_certificate_number,
+    ration_card_number,
   } = req.body;
 
   if (
@@ -106,7 +107,8 @@ export const insertHousehold = async (req, res) => {
         ? `${req.protocol}://${req.get("host")}${family_head_signature_img_response.url}`
         : "",
       caste,
-      caste_certificate_number
+      caste_certificate_number,
+      ration_card_number
     );
 
     const responseMap = {
@@ -582,6 +584,7 @@ export const insertHouseHoldAndFamilyMembersData = async (req, res) => {
     family_head_signature_img = null,
     caste,
     caste_certificate_number,
+    ration_card_number,
   } = req.body;
 
   if (!user_id || !Array.isArray(family_members) || family_members.length === 0) {
@@ -661,7 +664,8 @@ export const insertHouseHoldAndFamilyMembersData = async (req, res) => {
         ? `${req.protocol}://${req.get("host")}${family_head_signature_img_response.url}`
         : "",
       caste,
-      caste_certificate_number
+      caste_certificate_number,
+      ration_card_number
     );
 
     const responseMap = {

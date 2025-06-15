@@ -146,7 +146,8 @@ export async function insertHouseholdModelV1(
   household_img = null,
   family_head_signature_img = null,
   caste,
-  caste_certificate_number
+  caste_certificate_number,
+  ration_card_number
 ) {
   try {
     const params = [
@@ -168,12 +169,13 @@ export async function insertHouseholdModelV1(
       household_img,
       family_head_signature_img,
       caste,
-      caste_certificate_number
+      caste_certificate_number,
+      ration_card_number
     ];
 
     // Call the stored procedure with 3 new image inputs + 2 OUT params
     await pool.query(
-      "CALL sp_insertHouseholdV1(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, @p_error_code, @p_household_id);",
+      "CALL sp_insertHouseholdV1(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, @p_error_code, @p_household_id);",
       params
     );
 
@@ -181,12 +183,6 @@ export async function insertHouseholdModelV1(
     const [[result]] = await pool.query(
       "SELECT @p_error_code AS error_code, @p_household_id AS household_id"
     );
-
-    console.log({
-      error_code: result.error_code,
-      household_id: result.household_id
-    });
-    
 
     return {
       error_code: result.error_code,
