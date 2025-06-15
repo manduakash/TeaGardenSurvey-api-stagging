@@ -836,60 +836,6 @@ export const insertHouseHoldAndFamilyMembersData = async (req, res) => {
   }
 };
 
-
-export const insertTrainingOption = async (req, res) => {
-  try {
-    const { training_name } = req.body;
-
-    // Input validation
-    if (!training_name) {
-      return res.status(400).json({
-        success: false,
-        message: "Training name is required",
-        data: null,
-      });
-    }
-
-    const statusCode = await insertTrainingOptionModel(training_name);
-
-    let message = "Unknown error occurred";
-    let success = false;
-    let status = 400;
-
-    switch (statusCode) {
-      case 0:
-        message = "Training option inserted successfully";
-        success = true;
-        status = 200;
-        break;
-      case 1:
-        message = "Duplicate training name";
-        break;
-      case 2:
-        message = "Invalid training name format";
-        break;
-      case 9:
-        message = "Internal server error";
-        status = 500;
-        break;
-    }
-
-    return res.status(status).json({
-      success,
-      message,
-      data: null,
-    });
-
-  } catch (error) {
-    console.error("insertTrainingOption error:", error.message);
-    return res.status(500).json({
-      success: false,
-      message: "Internal server error",
-      data: null,
-    });
-  }
-};
-
 export const getHouseholdBySurveyOrContact = async (req, res) => {
   try {
     const { survey_id_or_contact } = req.body;
@@ -1026,5 +972,28 @@ export const getAllDisabilityTypes = async (req, res) => {
     success: true,
     message: "No disability types found",
     data: [],
+  });
+};
+
+export const insertTrainingOption = async (req, res) => {
+  const { training_name } = req.body;
+
+  if (!training_name) {
+    return res.status(400).json({ success: false, message: "Training name is required" });
+  }
+
+  const result = await insertTrainingOptionModel(training_name);
+
+  if (result.error_code === 0 && result.inserted_id) {
+    return res.status(201).json({
+      success: true,
+      message: "Training option inserted successfully",
+      inserted_id: result.inserted_id,
+    });
+  }
+
+  return res.status(500).json({
+    success: false,
+    message: "Failed to insert training option",
   });
 };
