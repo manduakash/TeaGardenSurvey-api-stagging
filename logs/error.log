@@ -12,3 +12,7 @@
 2025-05-25 16:34:35 | ERROR | getHealthDetailsCountAnalytics error:
 2025-05-25 16:34:50 | ERROR | getHealthDetailsCountAnalytics error:
 2025-05-25 16:35:47 | ERROR | getHealthDetailsCountAnalytics error:
+2025-06-11 11:11:40 | ERROR | read ECONNRESET
+2025-06-11 11:11:40 | ERROR | DB error: read ECONNRESET
+2025-06-11 11:12:29 | ERROR | connect ETIMEDOUT
+2025-06-11 11:12:29 | ERROR | DB error: connect ETIMEDOUT
