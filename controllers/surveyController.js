@@ -1,11 +1,14 @@
 import {
-  insertHouseholdModel,
   insertHealthModel,
   insertLivelihoodModel,
   insertWelfareModel,
   insertHouseholdModelV1,
   insertTrainingOptionModel,
   getHouseholdBySurveyOrContactModel,
+  insertMigrantOccupationModel,
+  getAllMigrantOccupationsModel,
+  getAllDisabilityTypesModel,
+  insertDisabilityTypeModel,
 } from "../models/surveyModel.js";
 import logger from "../utils/logger.js";
 import { base64ToFileServer } from "./imageUploadController.js";
@@ -29,6 +32,8 @@ export const insertHousehold = async (req, res) => {
     family_head_img = null,
     household_img = null,
     family_head_signature_img = null,
+    caste,
+    caste_certificate_number,
   } = req.body;
 
   if (
@@ -99,7 +104,9 @@ export const insertHousehold = async (req, res) => {
         : "",
       family_head_signature_img_response?.url
         ? `${req.protocol}://${req.get("host")}${family_head_signature_img_response.url}`
-        : ""
+        : "",
+      caste,
+      caste_certificate_number
     );
 
     const responseMap = {
@@ -298,7 +305,9 @@ export const insertLivelihood = async (req, res) => {
       training_required,
       training_option,
       is_migrant_laborer,  // new field
-      migration_state      // new field (state_id)
+      migration_state ,     // new field (state_id)
+      is_disabled,
+      nature_of_disability,
     } = req.body;
     
     // Validate required fields
@@ -314,6 +323,8 @@ export const insertLivelihood = async (req, res) => {
             training_option,
             is_migrant_laborer,
             migration_state,
+            is_disabled,
+            nature_of_disability,
           },
           RESPONSE: {
             success: false,
@@ -337,7 +348,9 @@ export const insertLivelihood = async (req, res) => {
       training_required,
       training_option,
       is_migrant_laborer,
-      migration_state
+      migration_state,
+      is_disabled,
+      nature_of_disability
     );
 
     console.log("result", result);
@@ -354,6 +367,8 @@ export const insertLivelihood = async (req, res) => {
             training_option,
             is_migrant_laborer,
             migration_state,
+            is_disabled,
+            nature_of_disability,
           },
           RESPONSE: {
             success: true,
@@ -388,6 +403,8 @@ export const insertLivelihood = async (req, res) => {
             training_option,
             is_migrant_laborer,
             migration_state,
+            is_disabled,
+            nature_of_disability,
           },
           RESPONSE: {
             success: false,
@@ -411,7 +428,6 @@ export const insertLivelihood = async (req, res) => {
   }
 };
 
-
 export const insertWelfare = async (req, res) => {
   try {
     const {
@@ -424,6 +440,8 @@ export const insertWelfare = async (req, res) => {
       swasthya_sathi_card_no,
       old_age_pension,
       old_age_pension_id_no,
+      labour_id,
+      labour_card_no,
     } = req.body;
 
     // Validate required fields
@@ -441,6 +459,8 @@ export const insertWelfare = async (req, res) => {
             swasthya_sathi_card_no,
             old_age_pension,
             old_age_pension_id_no,
+            labour_id,
+            labour_card_no,
           },
           RESPONSE: {
             success: false,
@@ -466,7 +486,9 @@ export const insertWelfare = async (req, res) => {
       swasthya_sathi,
       swasthya_sathi_card_no,
       old_age_pension,
-      old_age_pension_id_no
+      old_age_pension_id_no,
+      labour_id,
+      labour_card_no
     );
 
     console.log("result", result);
@@ -485,6 +507,8 @@ export const insertWelfare = async (req, res) => {
             swasthya_sathi_card_no,
             old_age_pension,
             old_age_pension_id_no,
+            labour_id,
+            labour_card_no,
           },
           RESPONSE: {
             success: true,
@@ -511,6 +535,8 @@ export const insertWelfare = async (req, res) => {
             swasthya_sathi_card_no,
             old_age_pension,
             old_age_pension_id_no,
+            labour_id,
+            labour_card_no,
           },
           RESPONSE: {
             success: false,
@@ -554,6 +580,8 @@ export const insertHouseHoldAndFamilyMembersData = async (req, res) => {
     family_head_img = null,
     household_img = null,
     family_head_signature_img = null,
+    caste,
+    caste_certificate_number,
   } = req.body;
 
   if (!user_id || !Array.isArray(family_members) || family_members.length === 0) {
@@ -631,7 +659,9 @@ export const insertHouseHoldAndFamilyMembersData = async (req, res) => {
         : "",
       family_head_signature_img_response?.url
         ? `${req.protocol}://${req.get("host")}${family_head_signature_img_response.url}`
-        : ""
+        : "",
+      caste,
+      caste_certificate_number
     );
 
     const responseMap = {
@@ -683,8 +713,12 @@ export const insertHouseHoldAndFamilyMembersData = async (req, res) => {
         lakshmir_bhandar_card_no,
         swasthya_sathi_card_no,
         old_age_pension_id_no,
-        is_migrant_laborer,   // NEW field
-        migration_state       // NEW field
+        is_migrant_laborer,
+        migration_state,
+        labour_id,
+        labour_card_no,
+        is_disabled,
+        nature_of_disability,
       } = member;
 
       const memberResult = {
@@ -710,7 +744,11 @@ export const insertHouseHoldAndFamilyMembersData = async (req, res) => {
             nutrition_status,
             bp,
             sugar_level,
-            remarks
+            remarks,
+            labour_id,
+            labour_card_no,
+            is_disabled,
+            nature_of_disability
           );
 
           if (healthResult !== 0) {
@@ -730,7 +768,9 @@ export const insertHouseHoldAndFamilyMembersData = async (req, res) => {
           training_required,
           training_option,
           is_migrant_laborer,
-          migration_state
+          migration_state,
+          is_disabled,
+          nature_of_disability
         );
 
         if (livelihoodResult !== 0) {
@@ -750,7 +790,9 @@ export const insertHouseHoldAndFamilyMembersData = async (req, res) => {
           caste_certificate_id_no,
           lakshmir_bhandar_card_no,
           swasthya_sathi_card_no,
-          old_age_pension_id_no
+          old_age_pension_id_no,
+          labour_id,
+          labour_card_no
         );
 
         if (welfareResult !== 0) {
@@ -794,561 +836,6 @@ export const insertHouseHoldAndFamilyMembersData = async (req, res) => {
   }
 };
 
-
-export const offlineSyncSurveyData = async (req, res) => {
-  const {
-    state,
-    district,
-    sub_division,
-    block,
-    gp,
-    village,
-    house_number,
-    latitude,
-    longitude,
-    family_income,
-    total_members,
-    user_id,
-    family_members,
-    family_head_img = null,
-    household_img = null,
-    family_head_signature_img = null,
-  } = req.body;
-
-  if (
-    !user_id ||
-    !Array.isArray(family_members) ||
-    family_members.length === 0
-  ) {
-    return res.status(400).json({
-      success: false,
-      message: "Missing required input fields or family member data.",
-    });
-  }
-
-  try {
-    // document/image uploading..
-    const family_head_img_response = await base64ToFileServer(
-      family_head_img,
-      "family_head_img" +
-        `_${district}_${sub_division}_${block}_${gp}_${village}_${house_number.replace(
-          "/",
-          "-"
-        )}`
-    );
-    if (!family_head_img_response?.success) {
-      return res.status(400).json({
-        success: false,
-        message: `family_head_img: ${
-          family_head_img_response?.message || "Failed to upload"
-        }`,
-      });
-    }
-
-    const household_img_response = await base64ToFileServer(
-      household_img,
-      "household_img" +
-        `_${district}_${sub_division}_${block}_${gp}_${village}_${house_number.replace(
-          "/",
-          "-"
-        )}`
-    );
-    if (!household_img_response?.success) {
-      return res.status(400).json({
-        success: false,
-        message: `household_img: ${
-          household_img_response?.message || "Failed to upload"
-        }`,
-      });
-    }
-
-    const family_head_signature_img_response = await base64ToFileServer(
-      family_head_signature_img,
-      "family_head_signature_img" +
-        `_${district}_${sub_division}_${block}_${gp}_${village}_${house_number.replace(
-          "/",
-          "-"
-        )}`
-    );
-    if (!family_head_signature_img_response?.success) {
-      return res.status(400).json({
-        success: false,
-        message: `family_head_signature_img: ${
-          family_head_signature_img_response?.message || "Failed to upload"
-        }`,
-      });
-    }
-
-    // First insert household
-    const { error_code, household_id } = await insertHouseholdModelV1(
-      state,
-      district,
-      sub_division,
-      block,
-      gp,
-      village,
-      house_number,
-      latitude,
-      longitude,
-      family_income,
-      total_members,
-      user_id,
-      family_head_img_response?.url
-        ? `${req.protocol}://${req.get("host")}${family_head_img_response.url}`
-        : "",
-      household_img_response?.url
-        ? `${req.protocol}://${req.get("host")}${household_img_response.url}`
-        : "",
-      family_head_signature_img_response?.url
-        ? `${req.protocol}://${req.get("host")}${
-            family_head_signature_img_response.url
-          }`
-        : ""
-    );
-
-    const responseMap = {
-      0: "Household inserted successfully",
-      1: "Invalid user ID.",
-      2: "Invalid state ID.",
-      3: "Invalid district ID.",
-      4: "Invalid sub-division ID.",
-      5: "Invalid block ID.",
-      6: "Invalid GP ID.",
-      7: "Invalid village ID.",
-      8: "Duplicate survey ID.",
-      9: "Internal server error.",
-    };
-
-    if (error_code !== 0 || !household_id) {
-      return res.status(error_code === 9 ? 500 : 400).json({
-        success: false,
-        message: responseMap[error_code] || "Unknown error",
-      });
-    }
-
-    // Now insert family members
-    const resultMessages = [];
-
-    for (const member of family_members) {
-      const {
-        name,
-        gender,
-        dob,
-        age,
-        height,
-        weight,
-        bmi,
-        nutrition_status,
-        bp,
-        sugar_level,
-        remarks,
-        shg_member,
-        wants_to_join_shg,
-        training_required,
-        training_option,
-        caste_certificate,
-        lakshmir_bhandar,
-        swasthya_sathi,
-        old_age_pension,
-        caste_certificate_id_no,
-        lakshmir_bhandar_card_no,
-        swasthya_sathi_card_no,
-        old_age_pension_id_no,
-      } = member;
-
-      const memberResult = {
-        name,
-        health: "success",
-        livelihood: "success",
-        welfare: "success",
-      };
-
-      try {
-        if (!(name && gender && dob && age)) {
-          memberResult.health = "skipped (missing required fields)";
-        } else {
-          const healthResult = await insertHealthModel(
-            household_id,
-            name,
-            gender,
-            dob,
-            age,
-            height,
-            weight,
-            bmi,
-            nutrition_status,
-            bp,
-            sugar_level,
-            remarks
-          );
-
-          if (healthResult !== 0) {
-            memberResult.health = "failed";
-          }
-        }
-      } catch {
-        memberResult.health = "failed";
-      }
-
-      try {
-        const livelihoodResult = await insertLivelihoodModel(
-          household_id,
-          shg_member,
-          wants_to_join_shg,
-          training_required,
-          training_option
-        );
-
-        if (livelihoodResult !== 0) {
-          memberResult.livelihood = "failed";
-        }
-      } catch {
-        memberResult.livelihood = "failed";
-      }
-
-      try {
-        const welfareResult = await insertWelfareModel(
-          household_id,
-          caste_certificate,
-          lakshmir_bhandar,
-          swasthya_sathi,
-          old_age_pension,
-          caste_certificate_id_no,
-          lakshmir_bhandar_card_no,
-          swasthya_sathi_card_no,
-          old_age_pension_id_no,
-          caste_certificate_id_no,
-          lakshmir_bhandar_card_no,
-          swasthya_sathi_card_no,
-          old_age_pension_id_no
-        );
-
-        if (welfareResult !== 0) {
-          memberResult.welfare = "failed";
-        }
-      } catch {
-        memberResult.welfare = "failed";
-      }
-
-      resultMessages.push(memberResult);
-    }
-
-    const failedMembers = resultMessages.filter(
-      (m) =>
-        m.health === "failed" ||
-        m.livelihood === "failed" ||
-        m.welfare === "failed"
-    );
-
-    if (failedMembers.length > 0) {
-      return res.status(207).json({
-        success: false,
-        message: "Some records failed to save",
-        household_id,
-        data: resultMessages,
-      });
-    }
-
-    return res.status(200).json({
-      success: true,
-      message: "Household and all family data inserted successfully",
-      household_id,
-      data: resultMessages,
-    });
-  } catch (error) {
-    console.error("insertHouseholdAndFamilyData error:", error.message);
-    return res.status(500).json({
-      success: false,
-      message: "Server error occurred.",
-    });
-  }
-};
-
-export const offlineSyncSurveyAllData = async (req, res) => {
-  const { households } = req.body; // Expecting an array of households
-
-  if (!Array.isArray(households) || households.length === 0) {
-    return res.status(400).json({
-      success: false,
-      message: "Missing or invalid input data.",
-    });
-  }
-
-  const allResults = [];
-
-  try {
-    for (const householdData of households) {
-      const {
-        state,
-        district,
-        sub_division,
-        block,
-        gp,
-        village,
-        house_number,
-        latitude,
-        longitude,
-        family_income,
-        total_members,
-        user_id,
-        family_members,
-        family_head_img = null,
-        household_img = null,
-        family_head_signature_img = null,
-      } = householdData;
-
-      if (
-        !user_id ||
-        !Array.isArray(family_members) ||
-        family_members.length === 0
-      ) {
-        allResults.push({
-          success: false,
-          message: "Missing required input fields or family member data.",
-        });
-        continue;
-      }
-      // document/image uploading..
-      const family_head_img_response = await base64ToFileServer(
-        family_head_img,
-        "family_head_img" +
-          `_${district}_${sub_division}_${block}_${gp}_${village}_${house_number.replace(
-            "/",
-            "-"
-          )}`
-      );
-      if (!family_head_img_response?.success) {
-        return res.status(400).json({
-          success: false,
-          message: `family_head_img: ${
-            family_head_img_response?.message || "Failed to upload"
-          }`,
-        });
-      }
-
-      const household_img_response = await base64ToFileServer(
-        household_img,
-        "household_img" +
-          `_${district}_${sub_division}_${block}_${gp}_${village}_${house_number.replace(
-            "/",
-            "-"
-          )}`
-      );
-      if (!household_img_response?.success) {
-        return res.status(400).json({
-          success: false,
-          message: `household_img: ${
-            household_img_response?.message || "Failed to upload"
-          }`,
-        });
-      }
-
-      const family_head_signature_img_response = await base64ToFileServer(
-        family_head_signature_img,
-        "family_head_signature_img" +
-          `_${district}_${sub_division}_${block}_${gp}_${village}_${house_number.replace(
-            "/",
-            "-"
-          )}`
-      );
-      if (!family_head_signature_img_response?.success) {
-        return res.status(400).json({
-          success: false,
-          message: `family_head_signature_img: ${
-            family_head_signature_img_response?.message || "Failed to upload"
-          }`,
-        });
-      }
-
-      // First insert household
-      const { error_code, household_id } = await insertHouseholdModelV1(
-        state,
-        district,
-        sub_division,
-        block,
-        gp,
-        village,
-        house_number,
-        latitude,
-        longitude,
-        family_income,
-        total_members,
-        user_id,
-        family_head_img_response?.url
-          ? `${req.protocol}://${req.get("host")}${
-              family_head_img_response.url
-            }`
-          : "",
-        household_img_response?.url
-          ? `${req.protocol}://${req.get("host")}${household_img_response.url}`
-          : "",
-        family_head_signature_img_response?.url
-          ? `${req.protocol}://${req.get("host")}${
-              family_head_signature_img_response.url
-            }`
-          : ""
-      );
-
-      const responseMap = {
-        0: "Household inserted successfully",
-        1: "Invalid user ID.",
-        2: "Invalid state ID.",
-        3: "Invalid district ID.",
-        4: "Invalid sub-division ID.",
-        5: "Invalid block ID.",
-        6: "Invalid GP ID.",
-        7: "Invalid village ID.",
-        8: "Duplicate survey ID.",
-        9: "Internal server error.",
-      };
-
-      if (error_code !== 0 || !household_id) {
-        allResults.push({
-          success: false,
-          message: responseMap[error_code] || "Unknown error",
-        });
-        continue;
-      }
-
-      const resultMessages = [];
-
-      for (const member of family_members) {
-        const {
-          name,
-          gender,
-          dob,
-          age,
-          height,
-          weight,
-          bmi,
-          nutrition_status,
-          bp,
-          sugar_level,
-          remarks,
-          shg_member,
-          wants_to_join_shg,
-          training_required,
-          training_option,
-          caste_certificate,
-          lakshmir_bhandar,
-          swasthya_sathi,
-          old_age_pension,
-          caste_certificate_id_no,
-          lakshmir_bhandar_card_no,
-          swasthya_sathi_card_no,
-          old_age_pension_id_no,
-        } = member;
-
-        const memberResult = {
-          name,
-          health: "success",
-          livelihood: "success",
-          welfare: "success",
-        };
-
-        try {
-          if (!(name && gender && dob && age)) {
-            memberResult.health = "skipped (missing required fields)";
-          } else {
-            const healthResult = await insertHealthModel(
-              household_id,
-              name,
-              gender,
-              dob,
-              age,
-              height,
-              weight,
-              bmi,
-              nutrition_status,
-              bp,
-              sugar_level,
-              remarks
-            );
-
-            if (healthResult !== 0) {
-              memberResult.health = "failed";
-            }
-          }
-        } catch {
-          memberResult.health = "failed";
-        }
-
-        try {
-          const livelihoodResult = await insertLivelihoodModel(
-            household_id,
-            shg_member,
-            wants_to_join_shg,
-            training_required,
-            training_option
-          );
-
-          if (livelihoodResult !== 0) {
-            memberResult.livelihood = "failed";
-          }
-        } catch {
-          memberResult.livelihood = "failed";
-        }
-
-        try {
-          const welfareResult = await insertWelfareModel(
-            household_id,
-            caste_certificate,
-            lakshmir_bhandar,
-            swasthya_sathi,
-            old_age_pension,
-            caste_certificate_id_no,
-            lakshmir_bhandar_card_no,
-            swasthya_sathi_card_no,
-            old_age_pension_id_no
-          );
-
-          if (welfareResult !== 0) {
-            memberResult.welfare = "failed";
-          }
-        } catch {
-          memberResult.welfare = "failed";
-        }
-
-        resultMessages.push(memberResult);
-      }
-
-      const failedMembers = resultMessages.filter(
-        (m) =>
-          m.health === "failed" ||
-          m.livelihood === "failed" ||
-          m.welfare === "failed"
-      );
-
-      if (failedMembers.length > 0) {
-        allResults.push({
-          success: false,
-          message: "Some records failed to save",
-          household_id,
-          data: resultMessages,
-        });
-      } else {
-        allResults.push({
-          success: true,
-          message: "Household and all family data inserted successfully",
-          household_id,
-          data: resultMessages,
-        });
-      }
-    }
-
-    return res.status(200).json({
-      success: true,
-      message: "All data processed",
-      data: allResults,
-    });
-  } catch (error) {
-    console.error("offlineSyncSurveyAllData error:", error.message);
-    return res.status(500).json({
-      success: false,
-      message: "Server error occurred.",
-    });
-  }
-};
 
 export const insertTrainingOption = async (req, res) => {
   try {
@@ -1438,4 +925,106 @@ export const getHouseholdBySurveyOrContact = async (req, res) => {
       data: null,
     });
   }
+};
+
+export const insertMigrantOccupation = async (req, res) => {
+  try {
+    const { occupation_name } = req.body;
+
+    if (!occupation_name) {
+      return res.status(400).json({
+        success: false,
+        message: "Occupation name is required",
+      });
+    }
+
+    const result = await insertMigrantOccupationModel(occupation_name);
+
+    if (result.error_code === 0) {
+      return res.status(201).json({
+        success: true,
+        message: "Occupation inserted successfully",
+        inserted_id: result.inserted_id,
+      });
+    } else {
+      return res.status(500).json({
+        success: false,
+        message: "Failed to insert occupation",
+      });
+    }
+  } catch (error) {
+    console.error("insertMigrantOccupation error:", error.message);
+    return res.status(500).json({
+      success: false,
+      message: "Internal server error",
+    });
+  }
+};
+
+export const getAllMigrantOccupations = async (req, res) => {
+  try {
+    const data = await getAllMigrantOccupationsModel();
+
+    if (data && data.length > 0) {
+      return res.status(200).json({
+        success: true,
+        message: "Migrant occupations fetched successfully",
+        data,
+      });
+    } else {
+      return res.status(404).json({
+        success: true,
+        message: "No migrant occupations found",
+        data: [],
+      });
+    }
+  } catch (error) {
+    console.error("getAllMigrantOccupations error:", error.message);
+    return res.status(500).json({
+      success: false,
+      message: "Internal server error",
+      data: null,
+    });
+  }
+};
+
+export const insertDisabilityType = async (req, res) => {
+  const { disability_name } = req.body;
+
+  if (!disability_name) {
+    return res.status(400).json({ success: false, message: "Disability name is required" });
+  }
+
+  const result = await insertDisabilityTypeModel(disability_name);
+
+  if (result.error_code === 0) {
+    return res.status(201).json({
+      success: true,
+      message: "Disability type inserted successfully",
+      inserted_id: result.inserted_id,
+    });
+  }
+
+  return res.status(500).json({
+    success: false,
+    message: "Failed to insert disability type",
+  });
+};
+
+export const getAllDisabilityTypes = async (req, res) => {
+  const data = await getAllDisabilityTypesModel();
+
+  if (data.length > 0) {
+    return res.status(200).json({
+      success: true,
+      message: "Disability types fetched successfully",
+      data,
+    });
+  }
+
+  return res.status(404).json({
+    success: true,
+    message: "No disability types found",
+    data: [],
+  });
 };
