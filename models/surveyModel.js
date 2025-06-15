@@ -204,13 +204,12 @@ export async function insertHouseholdModelV1(
 export const insertTrainingOptionModel = async (training_name) => {
   try {
     const [rows] = await pool.query(
-      "CALL sp_insertTrainingOption(?, @p_status_code);",
+      "CALL sp_insertTrainingOption(?, @p_error_code, @p_inserted_id);",
       [training_name]
     );
 
-    const [[statusResult]] = await pool.query("SELECT @p_status_code AS status_code");
-
-    return statusResult?.status_code ?? 9; // Default to internal error
+    const [[result]] = await pool.query("SELECT @p_error_code AS error_code, @p_inserted_id AS inserted_id");
+    return result;
   } catch (error) {
     console.error("insertTrainingOptionModel error:", error.message);
     return 9;
