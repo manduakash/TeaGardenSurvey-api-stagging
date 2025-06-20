@@ -94,6 +94,7 @@ export async function getTotalHouseholdsSurveyedDetailsModel(
   block_id,
   gp_id,
   village_id,
+  teagarden_id,
   start_date,
   end_date
 ) {
@@ -107,6 +108,7 @@ export async function getTotalHouseholdsSurveyedDetailsModel(
         block_id,
         gp_id,
         village_id,
+        teagarden_id,
         start_date,
         end_date,
       ]
