@@ -161,22 +161,8 @@ export const insertHealth = async (req, res) => {
       bp,
       sugar_level,
       remarks,
+      user_id
     } = req.body;
-
-    console.log({
-      household_id,
-      name,
-      gender,
-      dob,
-      age,
-      height,
-      weight,
-      bmi,
-      nutrition_status,
-      bp,
-      sugar_level,
-      remarks,
-    });
 
     // Validate required fields
     if (!(household_id && name && gender && dob && age)) {
@@ -224,7 +210,8 @@ export const insertHealth = async (req, res) => {
       nutrition_status,
       bp,
       sugar_level,
-      remarks
+      remarks,
+      user_id
     );
 
     console.log("result", result);
@@ -311,6 +298,7 @@ export const insertLivelihood = async (req, res) => {
       is_disabled,
       nature_of_disability,
       migrant_occupation_id,
+      user_id
     } = req.body;
     
     // Validate required fields
@@ -355,7 +343,8 @@ export const insertLivelihood = async (req, res) => {
       migration_state,
       is_disabled,
       nature_of_disability,
-      migrant_occupation_id
+      migrant_occupation_id,
+      user_id
     );
 
     console.log("result", result);
@@ -449,6 +438,7 @@ export const insertWelfare = async (req, res) => {
       old_age_pension_id_no,
       labour_id,
       labour_card_no,
+      user_id
     } = req.body;
 
     // Validate required fields
@@ -495,7 +485,8 @@ export const insertWelfare = async (req, res) => {
       old_age_pension,
       old_age_pension_id_no,
       labour_id,
-      labour_card_no
+      labour_card_no,
+      user_id
     );
 
     console.log("result", result);
@@ -758,7 +749,8 @@ export const insertHouseHoldAndFamilyMembersData = async (req, res) => {
             labour_id,
             labour_card_no,
             is_disabled,
-            nature_of_disability
+            nature_of_disability,
+            user_id
           );
 
           if (healthResult !== 0) {
@@ -781,7 +773,8 @@ export const insertHouseHoldAndFamilyMembersData = async (req, res) => {
           migration_state,
           is_disabled,
           nature_of_disability,
-          migrant_occupation_id
+          migrant_occupation_id,
+          user_id
         );
 
         if (livelihoodResult !== 0) {
@@ -803,7 +796,8 @@ export const insertHouseHoldAndFamilyMembersData = async (req, res) => {
           swasthya_sathi_card_no,
           old_age_pension_id_no,
           labour_id,
-          labour_card_no
+          labour_card_no,
+          user_id
         );
 
         if (welfareResult !== 0) {
