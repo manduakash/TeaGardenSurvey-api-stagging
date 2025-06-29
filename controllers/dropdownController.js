@@ -343,6 +343,7 @@ export const getTotalHouseholdsSurveyedDetails = async (req, res) => {
       block_id,
       gp_id,
       village_id,
+      teagarden_id,
       start_date,
       end_date,
     } = req.body;
@@ -363,6 +364,7 @@ export const getTotalHouseholdsSurveyedDetails = async (req, res) => {
       block_id,
       gp_id,
       village_id,
+      teagarden_id,
       start_date,
       end_date
     );

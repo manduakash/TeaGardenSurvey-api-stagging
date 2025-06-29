@@ -12,11 +12,12 @@ export async function insertHealthModel(
   nutrition_status,
   bp,
   sugar_level,
-  remarks
+  remarks,
+  user_id
 ) {
   try {
     const [rows] = await pool.query(
-      "CALL sp_insertHealth(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,@p_error_code);",
+      "CALL sp_insertHealth(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, @p_error_code);",
       [
         household_id,
         name,
@@ -30,6 +31,7 @@ export async function insertHealthModel(
         bp,
         sugar_level,
         remarks,
+        user_id
       ]
     );
 
@@ -55,11 +57,12 @@ export async function insertLivelihoodModel(
   migration_state,       // new parameter: state_id (int) or null
   is_disabled,
   nature_of_disability,
-  migrant_occupation_id
+  migrant_occupation_id,
+  user_id
 ) {
   try {
     const [rows] = await pool.query(
-      "CALL sp_insertLivelihood(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, @p_error_code);",
+      "CALL sp_insertLivelihood(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, @p_error_code);",
       [
         household_id,
         shg_member,
@@ -70,7 +73,8 @@ export async function insertLivelihoodModel(
         migration_state,
         is_disabled,
         nature_of_disability,
-        migrant_occupation_id
+        migrant_occupation_id,
+        user_id
       ]
     );
 
@@ -96,12 +100,13 @@ export async function insertWelfareModel(
   old_age_pension,
   old_age_pension_id_no="",
   labour_id,
-  labour_card_no
+  labour_card_no,
+  user_id
 ) {
   try {
     // Call SP with all input parameters and the OUT parameter
     const [rows] = await pool.query(
-      "CALL sp_insertWelfare(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, @p_error_code);",
+      "CALL sp_insertWelfare(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, @p_error_code);",
       [
         household_id,
         caste_certificate,
@@ -113,7 +118,8 @@ export async function insertWelfareModel(
         old_age_pension,
         old_age_pension_id_no,
         labour_id,
-        labour_card_no
+        labour_card_no,
+        user_id
       ]
     );
 
